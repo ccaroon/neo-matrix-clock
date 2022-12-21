@@ -12,7 +12,7 @@ include ./makefiles/FileMgmt.mk
 # NOTE: boot and main **must** be .py files ... not .mpy
 BOOT = boot.pyc
 APP  = main.pyc
-LIBS = lib/chronos.mpy lib/file_utils.mpy lib/matrix.mpy lib/secrets.mpy lib/wifi.mpy
+LIBS = lib/chronos.mpy lib/file_utils.mpy lib/neo_matrix.mpy lib/secrets.mpy lib/wifi.mpy
 CLOCKS = clocks/binary.py
 
 # Order matters - This include must come after above vars are set.
