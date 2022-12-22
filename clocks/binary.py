@@ -1,24 +1,29 @@
 import time
 from machine import RTC
 
+from color_set import ColorSet
+
 class BinaryClock:
 
-    OFF = (0,0,0,0)
-    HOUR_ON   = (128,0,0,0)
-    SECOND_ON = (0,128,0,0)
-    MINUTE_ON = (0,0,128,0)
+    OFF          = ColorSet.BLACK
+    HOUR_COLOR   = ColorSet.WINTER[0]
+    MINUTE_COLOR = ColorSet.WINTER[1]
+    SECOND_COLOR = ColorSet.WINTER[2]
 
-    HOUR = [
+    # As Row,Col tuples
+    HOUR_PIXELS = [
         ( (1,1), (2,1), (3,1), (4,1) ),
         ( (1,2), (2,2), (3,2), (4,2) )
     ]
 
-    MINUTES = [
+    # As Row,Col tuples
+    MINUTE_PIXELS = [
         ( (1,3), (2,3), (3,3), (4,3) ),
         ( (1,4), (2,4), (3,4), (4,4) )
     ]
 
-    SECONDS = [
+    # As Row,Col tuples
+    SECOND_PIXELS = [
         ( (1,5), (2,5), (3,5), (4,5) ),
         ( (1,6), (2,6), (3,6), (4,6) )
     ]
@@ -34,9 +39,9 @@ class BinaryClock:
         seconds = now[6]
 
         print("%02d:%02d:%02d" % (hour, minutes, seconds))
-        self.__set_number(hour, self.HOUR, self.HOUR_ON)
-        self.__set_number(seconds, self.SECONDS, self.SECOND_ON)
-        self.__set_number(minutes, self.MINUTES, self.MINUTE_ON)
+        self.__set_number(hour, self.HOUR_PIXELS, self.HOUR_COLOR)
+        self.__set_number(minutes, self.MINUTE_PIXELS, self.MINUTE_COLOR)
+        self.__set_number(seconds, self.SECOND_PIXELS, self.SECOND_COLOR)
 
         self.__matrix.update()
 

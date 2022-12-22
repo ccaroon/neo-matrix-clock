@@ -30,7 +30,7 @@ class NeoMatrix:
         self.__matrix.write()
 
     def set(self, num, color):
-        self.__matrix[num] = color
+        self.__matrix[num] = color.as_tuple()
 
     def set_rc(self, row, col, color):
         num = (row * 8) + col
