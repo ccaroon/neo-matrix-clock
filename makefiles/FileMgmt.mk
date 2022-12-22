@@ -17,7 +17,7 @@ endif
 
 upload-file:
 ifneq ($(FILE),)
-	ampy --port $(PORT) put $(FILE) $(DEST)/$(shell basename $(FILE))
+	ampy --port $(PORT) put $(FILE) $(FILE)
 else
 	echo "ERROR: Must Specify a filename with FILE=filename"
 endif
