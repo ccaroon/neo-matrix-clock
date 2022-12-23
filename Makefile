@@ -13,7 +13,7 @@ include ./makefiles/FileMgmt.mk
 BOOT = boot.pyc
 APP  = main.pyc
 LIBS = lib/chronos.mpy lib/color.mpy lib/color_set.mpy lib/file_utils.mpy lib/neo_matrix.mpy lib/secrets.mpy lib/wifi.mpy
-CLOCKS = clocks/binary.mpy
+CLOCKS = clocks/binary.mpy clocks/digital.mpy
 
 # Order matters - This include must come after above vars are set.
 include ./makefiles/App.mk
