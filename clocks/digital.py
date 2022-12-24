@@ -1,7 +1,7 @@
 import time
 from machine import RTC
 
-from color_set import ColorSet
+from color_factory import ColorFactory
 
 class Digit:
     TEMPLATE = [
@@ -102,41 +102,70 @@ class Digit:
         return cls.DIGITS[digit]
 
 class DigitalClock:
-    OFF          = ColorSet.BLACK
-    # HOURS_COLORS = (ColorSet.CHRISTMAS[0], ColorSet.CHRISTMAS[1])
-    HOURS_COLORS = (ColorSet.GREEN, ColorSet.BLUE)
-    MINUTES_COLORS = (ColorSet.BLUE, ColorSet.GREEN)
+    OFF          = ColorFactory.get("black")
+    HOURS_COLORS = (ColorFactory.get("blue"), ColorFactory.get("green"))
+    MINUTES_COLORS = (ColorFactory.get("blue"), ColorFactory.get("green"))
+    SECONDS_COLOR = ColorFactory.get("cyan", 0.25)
+    AM_PM_COLOR = ColorFactory.get("cyan", 0.25)
 
-    def __init__(self, matrix):
+    AM_PIXELS = (
+        (0,0), (1,0)
+    )
+    PM_PIXELS = (
+        (3,0), (4,0)
+    )
+
+    SECONDS_PIXELS = (
+        (0,7), (1,7), (2,7), (3,7), (4,7)
+    )
+
+    def __init__(self, matrix, display24h = True):
         self.__rtc = RTC()
         self.__matrix = matrix
+        self.__display24h = display24h
+
 
     def __update(self):
         now = self.__rtc.datetime()
         hour = now[4]
         minutes = now[5]
         seconds = now[6]
+        is_am = True if hour < 12 else False
 
         print("%02d:%02d:%02d" % (hour, minutes, seconds))
 
-        if seconds % 10 == 0:
-            self.__set_number(minutes, self.MINUTES_COLORS)
+        # Alternate showing hours & minutes every 10 seconds
+        if int(seconds/5) % 2 == 0:
+            if not self.__display24h:
+                hour = hour-12 if hour > 12 else hour
+            self.__set_number(hour, self.HOURS_COLORS, zero_pad=self.__display24h)
         else:
-            self.__set_number(hour, self.HOURS_COLORS)
+            self.__set_number(minutes, self.MINUTES_COLORS)
 
-        # self.__set_number(seconds, self.HOURS_COLORS)
+        # show AM/PM indicator
+        am_pm_loc = self.AM_PIXELS if is_am else self.PM_PIXELS
+        for loc in am_pm_loc:
+            self.__matrix.set_rc(loc[0], loc[1], self.AM_PM_COLOR)
+
+        # Seconds "blinker"
+        # count = int(seconds/12)
+        # for idx, loc in enumerate(self.SECONDS_PIXELS):
+        #     color = self.SECONDS_COLOR if idx <= count else self.OFF
+        #     # print("(%d,%d) = %s" % (loc[0], loc[1], color))
+        #     self.__matrix.set_rc(loc[0], loc[1], color)
 
         self.__matrix.update()
 
-    def __set_number(self, number, colors):
+    def __set_number(self, number, colors, zero_pad=True):
         # 1. split into digits
         d0 = int(number / 10)
         d1 = number % 10
 
-        left_shift = 1
+        col_offset = 1
         for idx, digit in enumerate((d0, d1)):
-            self.__draw_digit(digit, left_shift, colors[idx])
-            left_shift += 3
+            color = self.OFF if idx == 0 and digit == 0 and zero_pad is False else colors[idx]
+            self.__draw_digit(digit, col_offset, color)
+            col_offset += 3
 
     def __draw_digit(self, digit, offset, color):
         pixels = Digit.get_pixels(digit)

@@ -8,6 +8,6 @@ matrix = NeoMatrix()
 # clock = BinaryClock(matrix)
 
 # Digital Clock
-clock = DigitalClock(matrix)
+clock = DigitalClock(matrix, display24h=False)
 
-# clock.run()
+clock.run()

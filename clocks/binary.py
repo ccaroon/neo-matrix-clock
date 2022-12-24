@@ -1,14 +1,15 @@
 import time
 from machine import RTC
 
-from color_set import ColorSet
+from color_factory import ColorFactory
 
 class BinaryClock:
 
-    OFF          = ColorSet.BLACK
-    HOUR_COLOR   = ColorSet.WINTER[0]
-    MINUTE_COLOR = ColorSet.WINTER[1]
-    SECOND_COLOR = ColorSet.WINTER[2]
+    OFF          = ColorFactory.get("black")
+    SEASON       = ColorFactory.get_season("winter")
+    HOUR_COLOR   = SEASON[0]
+    MINUTE_COLOR = SEASON[1]
+    SECOND_COLOR = SEASON[2]
 
     # As Row,Col tuples
     HOUR_PIXELS = [
