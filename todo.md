@@ -12,6 +12,7 @@
   - [x] Basic colors
   - [x] Color groups (seasons, holidays, etc.)
 * [ ] matrix freak-outs
+  > Before connecting a NeoPixel strip to ANY source of power, a large capacitor (500–1000 µF at 6.3 Volts or higher) across the + and – terminals provides a small power reservoir for abrupt changes in brightness that the power source might not otherwise handle — a common source of NeoPixel “glitching.”
   - too bright?
   - too many colors at one?
   - specific colors?
@@ -26,6 +27,8 @@
   - [x] seconds "tick" up&down side pixels
   - [x] alternate showing hour & mins for X seconds at a time
   - colors: hour/min/both i.e. mix colors in digits to show hour&min at same time
+* [ ] Countdown in Days
+* [ ] Morse Code
 
 ## Features
 * [ ] Bluetooth control

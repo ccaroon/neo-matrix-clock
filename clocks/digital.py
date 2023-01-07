@@ -102,11 +102,13 @@ class Digit:
         return cls.DIGITS[digit]
 
 class DigitalClock:
-    OFF          = ColorFactory.get("black")
-    HOURS_COLORS = (ColorFactory.get("blue"), ColorFactory.get("green"))
-    MINUTES_COLORS = (ColorFactory.get("blue"), ColorFactory.get("green"))
-    SECONDS_COLOR = ColorFactory.get("cyan", 0.25)
-    AM_PM_COLOR = ColorFactory.get("cyan", 0.25)
+    COLOR_SET = ColorFactory.get_season("winter")
+
+    OFF            = ColorFactory.get("black")
+    HOURS_COLORS   = (COLOR_SET[0], COLOR_SET[1])
+    MINUTES_COLORS = (COLOR_SET[1], COLOR_SET[0])
+    SECONDS_COLOR  = COLOR_SET[2]
+    AM_PM_COLOR    = COLOR_SET[2]
 
     AM_PIXELS = (
         (0,0), (1,0)
@@ -116,7 +118,12 @@ class DigitalClock:
     )
 
     SECONDS_PIXELS = (
-        (0,7), (1,7), (2,7), (3,7), (4,7)
+        (4,7),
+        # NOTE: something wrong with 3,7 #31?
+        (4,7),
+        (2,7),
+        (1,7),
+        (0,7)
     )
 
     def __init__(self, matrix, display24h = True):
@@ -143,16 +150,17 @@ class DigitalClock:
             self.__set_number(minutes, self.MINUTES_COLORS)
 
         # show AM/PM indicator
+        # TODO: turn old off when changes to new
         am_pm_loc = self.AM_PIXELS if is_am else self.PM_PIXELS
         for loc in am_pm_loc:
             self.__matrix.set_rc(loc[0], loc[1], self.AM_PM_COLOR)
 
         # Seconds "blinker"
-        # count = int(seconds/12)
-        # for idx, loc in enumerate(self.SECONDS_PIXELS):
-        #     color = self.SECONDS_COLOR if idx <= count else self.OFF
-        #     # print("(%d,%d) = %s" % (loc[0], loc[1], color))
-        #     self.__matrix.set_rc(loc[0], loc[1], color)
+        count = int(seconds/12)
+        for idx, loc in enumerate(self.SECONDS_PIXELS):
+            color = self.SECONDS_COLOR if idx <= count else self.OFF
+            # print("(%d,%d) = %s" % (loc[0], loc[1], color))
+            self.__matrix.set_rc(loc[0], loc[1], color)
 
         self.__matrix.update()
 
