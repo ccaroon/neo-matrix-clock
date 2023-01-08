@@ -73,10 +73,3 @@ class Season:
             color_set = cls.get("winter", brightness)
 
         return color_set
-
-
-
-
-
-
-#

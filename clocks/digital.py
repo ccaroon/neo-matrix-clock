@@ -172,6 +172,7 @@ class DigitalClock:
             self.__matrix.set_rc(loc[0], loc[1], self.OFF)
 
         # Seconds "ticker"
+        # TODO: every second, tick up, then back down, up,down,up,down
         count = int(seconds/12)
         for idx, loc in enumerate(self.SECONDS_PIXELS):
             color = self.SECONDS_COLOR if idx <= count else self.OFF

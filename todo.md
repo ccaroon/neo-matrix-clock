@@ -22,6 +22,7 @@
 * [ ] Add more seasons/holidays colors
   - [x] Factor out Season from ColorFactory
   - [ ] Factor out Holidays from ColorFactory
+* [ ]  Better way to mkdirs and install files (Makefile)
 
 ## Clocks
 * [x] Binary

@@ -4,6 +4,7 @@
 * NeoMatrix now works with RGB or RGBW LEDS
 * Fixed AM/PM indicator bug in Digital clock
 * Factored out Seasonal colors from ColorFactory
+* Factored out Holiday colors from ColorFactory
 * Moved all color related classes to `lib/colors` package
 
 ## 2023-01-07

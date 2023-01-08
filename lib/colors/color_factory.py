@@ -23,15 +23,6 @@ class ColorFactory:
         "pink": Color(255,1,80)
     }
 
-    HOLIDAYS = {
-        "christmas": (
-            COLORS["white"],
-            COLORS["green"],
-            COLORS["red"],
-            Color(75, 150, 255) # light-blue'ish
-        )
-    }
-
     @classmethod
     def get(cls, name, brightness=Color.DEFAULT_BRIGHTNESS):
         color = cls.COLORS.get(name)
@@ -54,25 +45,9 @@ class ColorFactory:
         return color_set[0] if len(color_set) == 1 else color_set
 
     @classmethod
-    def hex(self, hex_str):
+    def hex(self, hex_str, brightness=Color.DEFAULT_BRIGHTNESS):
         red = int(hex_str[0:2], 16)
         green = int(hex_str[2:4], 16)
         blue= int(hex_str[4:6], 16)
 
-        return Color(red, green, blue)
-
-    @classmethod
-    def __get_color_set(cls, color_set, name, brightness):
-        colors = color_set.get(name)
-
-        if colors is None:
-            raise ValueError("Unknown Color Set: '%d'" % name)
-
-        for color in colors:
-            color.brightness = brightness
-
-        return colors
-
-    @classmethod
-    def get_holiday(cls, name, brightness=Color.DEFAULT_BRIGHTNESS):
-        return cls.__get_color_set(cls.HOLIDAYS, name, brightness)
+        return Color(red, green, blue, brightness=brightness)
