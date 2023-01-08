@@ -26,56 +26,57 @@ class Holiday:
             ColorFactory.get("white")
         ),
         "new_years": (
-            ColorFactory.get("white"),  # white
-            ColorFactory.get("yellow"), # yellow
+            ColorFactory.get("white"),
+            ColorFactory.get("yellow"),
             ColorFactory.hex("AF00FF"), # purple
             ColorFactory.hex("0096C8")  # blue
         ),
         "valentines": (
-            ColorFactory.get("red"),    # red
-            ColorFactory.get("white"),  # white
+            ColorFactory.get("red"),
+            ColorFactory.get("white"),
             ColorFactory.hex("FF4545"), # pink
-            ColorFactory.get("black")   # off
+            ColorFactory.get("black")
         ),
         "birthday": (
-        #     {red : 0, green : 255, blue : 0},   # green
-        #     {red : 255, green : 0, blue : 255}, # purple
-        #     {red : 0, green : 0, blue : 255},   # blue
-        #     {red : 255, green : 255, blue : 0}, # yellow
+            ColorFactory.get("green"),
+            ColorFactory.get("violet"),
+            ColorFactory.get("yellow"),
+            ColorFactory.get("blue")
         ),
         "st_patricks": (
-        #     off,
-        #     {red : 0, green : 255, blue : 0},     # green
-        #     {red : 255, green : 255, blue : 255}, # white
-        #     {red : 40, green : 255, blue : 40},   # light-green
+            ColorFactory.get("green"),
+            ColorFactory.get("white"),
+            ColorFactory.hex("28FF28"), # light-green
+            ColorFactory.get("black")
         ),
         "independence": (
-        #     off,
-        #     {red : 255, green : 0, blue : 0},     # red
-        #     {red : 255, green : 255, blue : 255}, # white
-        #     {red : 0, green : 0, blue : 255},     # blue
+            ColorFactory.get("red"),
+            ColorFactory.get("white"),
+            ColorFactory.get("blue"),
+            ColorFactory.get("black")
         ),
         "halloween": (
-        #     {red : 255, green : 255, blue : 255}, # white
-        #     {red : 255, green : 100, blue : 0},   # orange
-        #     {red : 255, green : 0, blue : 255},   # purple
-        #     {red : 0, green : 255, blue : 0},     # green
+            ColorFactory.get("orange"),
+            ColorFactory.get("violet"),
+            ColorFactory.get("green"),
+            ColorFactory.get("white")
         ),
         "thanksgiving": (
-        #     {red : 255, green : 255, blue : 255}, # white
-        #     {red : 255, green : 0, blue : 0},     # red
-        #     {red : 240, green : 255, blue : 0},   # yellow
-        #     {red : 255, green : 100, blue : 0},   # orange
+            ColorFactory.get("red"),
+            ColorFactory.get("yellow"),
+            ColorFactory.get("orange"),
+            ColorFactory.get("white")
         ),
         "christmas": (
-        #     {red : 255, green : 255, blue : 255}, # white
-        #     {red : 0, green : 255, blue : 0},     # green
-        #     {red : 255, green : 0, blue : 0},     # red
-        #     {red : 75, green : 150, blue : 255},  # light-blue
+            ColorFactory.get("white"),
+            ColorFactory.get("green"),
+            ColorFactory.get("red"),
+            ColorFactory.hex("4B96FF")  # light-blue
         ),
     }
 
     HOLIDAY_MAP = {
+        TODAY: "today",
         NEWYEAR: "new_years",
         VALENTINES: "valentines",
         BIRTHDAY: "birthday",
@@ -83,8 +84,7 @@ class Holiday:
         INDYPENDY: "independence",
         HALLOWEEN: "halloween",
         THANKSGIVING: "thanksgiving",
-        CHRISTMAS: "christmas",
-        TODAY: "today"
+        CHRISTMAS: "christmas"
     }
 
     @classmethod
