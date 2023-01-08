@@ -1,7 +1,7 @@
 app-usage:
 	@echo "Usage: 'include App.mk'"
 
-install: boot.pyc main.pyc lib/secrets.py libs clocks
+install: boot.pyc main.pyc lib/secrets.py libs clocks lib/colors
 
 boot.pyc: boot.py
 	touch boot.pyc
@@ -30,6 +30,14 @@ lib/__init__.pyc: lib/__init__.py
 	ampy --port $(PORT) mkdir lib
 	make upload-file FILE=lib/__init__.py
 
+# COLORS
+lib/colors: lib/colors/__init__.pyc $(COLORS)
+
+lib/colors/__init__.pyc: lib/colors/__init__.py
+	touch $@
+	ampy --port $(PORT) mkdir lib/colors
+	make upload-file FILE=lib/colors/__init__.py
+
 %.pyc: %.py
 	touch $@
 	make upload-file FILE=$< $<
@@ -38,4 +46,4 @@ lib/__init__.pyc: lib/__init__.py
 	mpy-cross $<
 	make upload-file FILE=$@ $@
 
-.PHONY: default install boot app libs clocks
+.PHONY: default install boot app libs clocks lib/colors

@@ -1,12 +1,12 @@
 import random
-from color import Color
+from lib.colors.color import Color
 
 class ColorFactory:
-
     COLORS = {
         # b&w
         "black": Color(0,0,0),
-        "white": Color(0,0,0,255),
+        "white": Color(255,255,255),
+        "white_rgbw": Color(0,0,0,255),
 
         # rainbow
         "red": Color(255,0,0),
@@ -21,14 +21,6 @@ class ColorFactory:
         "cyan": Color(0,255,128),
         "purple": Color(255,0,255),
         "pink": Color(255,1,80)
-    }
-
-    SEASONS = {
-        "winter": (
-            COLORS["white"],
-            Color(0, 128, 255), # blue'ish
-            COLORS["cyan"],
-        )
     }
 
     HOLIDAYS = {
@@ -50,20 +42,22 @@ class ColorFactory:
         return color
 
     @classmethod
-    def random(cls, brightness=Color.DEFAULT_BRIGHTNESS):
-        red = random.randint(0,255)
-        green = random.randint(0,255)
-        blue = random.randint(0,255)
+    def random(cls, count=1, brightness=Color.DEFAULT_BRIGHTNESS):
+        color_set = []
+        for _ in range(count):
+            red = random.randint(0,255)
+            green = random.randint(0,255)
+            blue = random.randint(0,255)
 
-        return Color(red, green, blue)
+            color_set.append(Color(red, green, blue))
+
+        return color_set[0] if len(color_set) == 1 else color_set
 
     @classmethod
-    # desc:
-    #   - FFAABB
-    def make(self, desc):
-        red = int(desc[0:2], 16)
-        green = int(desc[2:4], 16)
-        blue= int(desc[4:6], 16)
+    def hex(self, hex_str):
+        red = int(hex_str[0:2], 16)
+        green = int(hex_str[2:4], 16)
+        blue= int(hex_str[4:6], 16)
 
         return Color(red, green, blue)
 
@@ -78,10 +72,6 @@ class ColorFactory:
             color.brightness = brightness
 
         return colors
-
-    @classmethod
-    def get_season(cls, name, brightness=Color.DEFAULT_BRIGHTNESS):
-        return cls.__get_color_set(cls.SEASONS, name, brightness)
 
     @classmethod
     def get_holiday(cls, name, brightness=Color.DEFAULT_BRIGHTNESS):

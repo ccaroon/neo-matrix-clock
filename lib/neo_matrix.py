@@ -1,40 +1,37 @@
 import random
 import time
-from machine import Pin
 
-from color_factory import ColorFactory
+from machine import Pin
 from neopixel import NeoPixel
+
+from lib.colors.color_factory import ColorFactory
 
 class NeoMatrix:
     PIN = 15
     PIXELS = 40
-    OFF = (0,0,0,0)
+    OFF = ColorFactory.get("black")
 
-    BAD_PIXELS = (31,)
-
-    def __init__(self):
+    def __init__(self, rgbw=False):
         pin = Pin(self.PIN, Pin.OUT)
-        # RGBW, so bpp=4
-        self.__matrix = NeoPixel(pin, self.PIXELS, bpp=4)
+
+        bpp = 4 if rgbw else 3
+        self.__matrix = NeoPixel(pin, self.PIXELS, bpp=bpp)
+        self.__rgbw = rgbw
 
     def clear(self):
-        self.__matrix.fill(self.OFF)
+        self.__matrix.fill(self.OFF.as_tuple(self.__rgbw))
         self.__matrix.write()
 
     def fill(self, color):
-        self.__matrix.fill(color.as_tuple())
+        self.__matrix.fill(color.as_tuple(self.__rgbw))
         self.__matrix.write()
 
     def slow_fill(self, color, delay=0.5):
-        # self.clear()
+        self.clear()
 
-        # fill
+        # fill slowly in reverse order
         for i in range(self.PIXELS-1, -1, -1):
-            if i in self.BAD_PIXELS:
-                print("skipping...%d" % (i))
-                next
-
-            self.__matrix[i] = color.as_tuple()
+            self.__matrix[i] = color.as_tuple(self.__rgbw)
             self.__matrix.write()
             time.sleep(delay)
 
@@ -47,9 +44,9 @@ class NeoMatrix:
 
             for i in range(0, self.PIXELS):
                 if i > 0:
-                    self.__matrix[i-1] = ColorFactory.get("black").as_tuple()
+                    self.__matrix[i-1] = ColorFactory.get("black").as_tuple(self.__rgbw)
 
-                self.__matrix[i] = test_color.as_tuple()
+                self.__matrix[i] = test_color.as_tuple(self.__rgbw)
 
                 self.__matrix.write()
                 time.sleep(delay)
@@ -78,34 +75,24 @@ class NeoMatrix:
         while True:
             num = random.randint(0,self.PIXELS - 1)
 
-            self.__matrix[num] = color.as_tuple()
+            self.__matrix[num] = color.as_tuple(self.__rgbw)
             self.__matrix.write()
 
             time.sleep(delay)
 
-            self.__matrix[num] = self.OFF
+            self.__matrix[num] = self.OFF.as_tuple(self.__rgbw)
             self.__matrix.write()
 
     def random_fill(self):
         for i in range(0,self.PIXELS):
-            red = random.randint(0,255)
-            green = random.randint(0,255)
-            blue = random.randint(0,255)
-            white = random.randint(0,32)
+            color = ColorFactory.random()
 
-            self.__matrix[i] = (red, green, blue, white)
-
-        self.__matrix.write()
-
-    def matrix(self):
-        for i in range(0, self.PIXELS):
-            color = random.choice(((0,0,0,0),(0,32,0,0)))
-            self.__matrix[i] = color
+            self.__matrix[i] = color.as_tuple(self.__rgbw)
 
         self.__matrix.write()
 
     def set(self, num, color):
-        self.__matrix[num] = color.as_tuple()
+        self.__matrix[num] = color.as_tuple(self.__rgbw)
 
     def set_rc(self, row, col, color):
         num = (row * 8) + col

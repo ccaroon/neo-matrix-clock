@@ -1,8 +1,10 @@
 import time
 from machine import RTC
 
-from color_factory import ColorFactory
+from lib.colors.color_factory import ColorFactory
+from lib.colors.season import Season
 
+# TODO: Factor this out to another module/class
 class Digit:
     TEMPLATE = [
         (0,0), (0,1), (0,2),
@@ -102,7 +104,13 @@ class Digit:
         return cls.DIGITS[digit]
 
 class DigitalClock:
-    COLOR_SET = ColorFactory.get_season("winter")
+    # COLOR_SET = ColorFactory.random(count=3)
+    COLOR_SET = Season.get("current")
+    # COLOR_SET = [
+    #     ColorFactory.get("orange"),
+    #     ColorFactory.get("blue"),
+    #     ColorFactory.get("cyan", brightness=0.10)
+    # ]
 
     OFF            = ColorFactory.get("black")
     HOURS_COLORS   = (COLOR_SET[0], COLOR_SET[1])
@@ -119,8 +127,7 @@ class DigitalClock:
 
     SECONDS_PIXELS = (
         (4,7),
-        # NOTE: something wrong with 3,7 #31?
-        (4,7),
+        (3,7),
         (2,7),
         (1,7),
         (0,7)
@@ -130,7 +137,6 @@ class DigitalClock:
         self.__rtc = RTC()
         self.__matrix = matrix
         self.__display24h = display24h
-
 
     def __update(self):
         now = self.__rtc.datetime()
@@ -150,12 +156,22 @@ class DigitalClock:
             self.__set_number(minutes, self.MINUTES_COLORS)
 
         # show AM/PM indicator
-        # TODO: turn old off when changes to new
-        am_pm_loc = self.AM_PIXELS if is_am else self.PM_PIXELS
-        for loc in am_pm_loc:
+        am_pm_on = None
+        am_pm_off = None
+        if is_am:
+            am_pm_on = self.AM_PIXELS
+            am_pm_off = self.PM_PIXELS
+        else:
+            am_pm_on = self.PM_PIXELS
+            am_pm_off = self.AM_PIXELS
+
+        for loc in am_pm_on:
             self.__matrix.set_rc(loc[0], loc[1], self.AM_PM_COLOR)
 
-        # Seconds "blinker"
+        for loc in am_pm_off:
+            self.__matrix.set_rc(loc[0], loc[1], self.OFF)
+
+        # Seconds "ticker"
         count = int(seconds/12)
         for idx, loc in enumerate(self.SECONDS_PIXELS):
             color = self.SECONDS_COLOR if idx <= count else self.OFF

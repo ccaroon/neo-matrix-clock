@@ -1,12 +1,13 @@
 import time
 from machine import RTC
 
-from color_factory import ColorFactory
+from lib.colors.color_factory import ColorFactory
+from lib.colors.season import Season
 
 class BinaryClock:
 
     OFF          = ColorFactory.get("black")
-    SEASON       = ColorFactory.get_season("winter")
+    SEASON       = Season.get("current")
     HOUR_COLOR   = SEASON[0]
     MINUTE_COLOR = SEASON[1]
     SECOND_COLOR = SEASON[2]

@@ -1,12 +1,12 @@
 # -- DEBUGGING
-from color_factory import ColorFactory
+from lib.colors.color_factory import ColorFactory
 # ------------------------------------------------------------------------------
 
 # -- BINARY CLOCK --
 # from neo_matrix import NeoMatrix
 # from clocks.binary import BinaryClock
 
-# matrix = NeoMatrix()
+# matrix = NeoMatrix(rgbw=True)
 # clock = BinaryClock(matrix)
 # clock.run()
 # ------------------------------------------------------------------------------
@@ -15,7 +15,7 @@ from color_factory import ColorFactory
 # from neo_matrix import NeoMatrix
 # from clocks.digital import DigitalClock
 
-# matrix = NeoMatrix()
+# matrix = NeoMatrix(rgbw=True)
 # clock = DigitalClock(matrix, display24h=False)
 # clock.run()
 # ------------------------------------------------------------------------------
@@ -37,7 +37,7 @@ from clocks.digital import DigitalClock
 
 button = Pin(27, Pin.IN, Pin.PULL_UP)
 
-matrix = NeoMatrix()
+matrix = NeoMatrix(rgbw=False)
 binary_clock = BinaryClock(matrix)
 digital_clock = DigitalClock(matrix, display24h=False)
 
