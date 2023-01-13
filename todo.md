@@ -21,8 +21,10 @@
   - Solution: Had a "bad" pixel on the RGBW NeoPixel Matrix
 * [ ] Add more seasons/holidays colors
   - [x] Factor out Season from ColorFactory
-  - [ ] Factor out Holidays from ColorFactory
+  - [x] Factor out Holidays from ColorFactory
 * [ ]  Better way to mkdirs and install files (Makefile)
+* [ ]  Glyphs lib to draw chars & digits
+  - [ ] Refactory DigitalClock to use
 
 ## Clocks
 * [x] Binary

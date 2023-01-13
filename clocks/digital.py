@@ -1,8 +1,7 @@
-import time
-from machine import RTC
-
 from lib.colors.color_factory import ColorFactory
 from lib.colors.season import Season
+
+from .clock import Clock
 
 # TODO: Factor this out to another module/class
 class Digit:
@@ -103,9 +102,10 @@ class Digit:
     def get_pixels(cls, digit):
         return cls.DIGITS[digit]
 
-class DigitalClock:
+class DigitalClock(Clock):
     # COLOR_SET = ColorFactory.random(count=3)
-    COLOR_SET = Season.get("current")
+    # COLOR_SET = Season.get("current")
+    COLOR_SET = ColorFactory.random(count=3)
     # COLOR_SET = [
     #     ColorFactory.get("orange"),
     #     ColorFactory.get("blue"),
@@ -134,12 +134,11 @@ class DigitalClock:
     )
 
     def __init__(self, matrix, display24h = True):
-        self.__rtc = RTC()
-        self.__matrix = matrix
+        super().__init__(matrix)
         self.__display24h = display24h
 
-    def __update(self):
-        now = self.__rtc.datetime()
+    def _update(self):
+        now = self._rtc.datetime()
         hour = now[4]
         minutes = now[5]
         seconds = now[6]
@@ -166,10 +165,10 @@ class DigitalClock:
             am_pm_off = self.AM_PIXELS
 
         for loc in am_pm_on:
-            self.__matrix.set_rc(loc[0], loc[1], self.AM_PM_COLOR)
+            self._matrix.set_rc(loc[0], loc[1], self.AM_PM_COLOR)
 
         for loc in am_pm_off:
-            self.__matrix.set_rc(loc[0], loc[1], self.OFF)
+            self._matrix.set_rc(loc[0], loc[1], self.OFF)
 
         # Seconds "ticker"
         # TODO: every second, tick up, then back down, up,down,up,down
@@ -177,9 +176,7 @@ class DigitalClock:
         for idx, loc in enumerate(self.SECONDS_PIXELS):
             color = self.SECONDS_COLOR if idx <= count else self.OFF
             # print("(%d,%d) = %s" % (loc[0], loc[1], color))
-            self.__matrix.set_rc(loc[0], loc[1], color)
-
-        self.__matrix.update()
+            self._matrix.set_rc(loc[0], loc[1], color)
 
     def __set_number(self, number, colors, zero_pad=True):
         # 1. split into digits
@@ -196,20 +193,6 @@ class DigitalClock:
         pixels = Digit.get_pixels(digit)
         for idx, loc in enumerate(Digit.TEMPLATE):
             if pixels[idx]:
-                self.__matrix.set_rc(loc[0], loc[1]+offset, color)
+                self._matrix.set_rc(loc[0], loc[1]+offset, color)
             else:
-                self.__matrix.set_rc(loc[0], loc[1]+offset, self.OFF)
-
-    def test(self, limit=100):
-        for i in range(0, limit):
-            self.__set_number(i, self.HOURS_COLORS)
-            self.__matrix.update()
-            time.sleep(1)
-
-    def tick(self):
-        self.__update()
-
-    def run(self):
-        while True:
-            self.tick()
-            time.sleep(1)
+                self._matrix.set_rc(loc[0], loc[1]+offset, self.OFF)

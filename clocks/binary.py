@@ -1,14 +1,13 @@
-import time
-from machine import RTC
-
 from lib.colors.color_factory import ColorFactory
 from lib.colors.season import Season
 from lib.colors.holiday import Holiday
 
-class BinaryClock:
+from .clock import Clock
+class BinaryClock(Clock):
 
     OFF          = ColorFactory.get("black")
-    SEASON       = Season.get("current")
+    # SEASON       = Season.get("current")
+    SEASON = ColorFactory.random(count=3)
     # SEASON = Holiday.get_current()
     HOUR_COLOR   = SEASON[0]
     MINUTE_COLOR = SEASON[1]
@@ -32,12 +31,8 @@ class BinaryClock:
         ( (1,6), (2,6), (3,6), (4,6) )
     ]
 
-    def __init__(self, matrix):
-        self.__rtc = RTC()
-        self.__matrix = matrix
-
-    def __update(self):
-        now = self.__rtc.datetime()
+    def _update(self):
+        now = self._rtc.datetime()
         hour = now[4]
         minutes = now[5]
         seconds = now[6]
@@ -46,8 +41,6 @@ class BinaryClock:
         self.__set_number(hour, self.HOUR_PIXELS, self.HOUR_COLOR)
         self.__set_number(minutes, self.MINUTE_PIXELS, self.MINUTE_COLOR)
         self.__set_number(seconds, self.SECOND_PIXELS, self.SECOND_COLOR)
-
-        self.__matrix.update()
 
     def __set_number(self, number, pixel_set, on_color):
         # 1. split into digits
@@ -67,16 +60,8 @@ class BinaryClock:
                 else:
                     color = on_color
 
-                self.__matrix.set_rc(
+                self._matrix.set_rc(
                     pixel_set[digit][idx][0],
                     pixel_set[digit][idx][1],
                     color
                 )
-
-    def tick(self):
-        self.__update()
-
-    def run(self):
-        while True:
-            self.tick()
-            time.sleep(1)
