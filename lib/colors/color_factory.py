@@ -23,6 +23,19 @@ class ColorFactory:
         "pink": Color(255,1,80)
     }
 
+    SETS = {
+        "rgb": (
+            COLORS["red"],
+            COLORS["green"],
+            COLORS["blue"],
+        ),
+        "Y+B=G": (
+            COLORS["yellow"],
+            COLORS["blue"],
+            COLORS["green"],
+        )
+    }
+
     @classmethod
     def get(cls, name, brightness=Color.DEFAULT_BRIGHTNESS):
         color = cls.COLORS.get(name)
@@ -40,9 +53,20 @@ class ColorFactory:
             green = random.randint(0,255)
             blue = random.randint(0,255)
 
-            color_set.append(Color(red, green, blue))
+            color_set.append(Color(red, green, blue, brightness=brightness))
 
         return color_set[0] if len(color_set) == 1 else color_set
+
+    @classmethod
+    def get_set(cls, name, brightness=Color.DEFAULT_BRIGHTNESS):
+        color_set = cls.SETS.get(name)
+        if color_set is None:
+            raise ValueError("Unknown Color Set: '%d'" % name)
+
+        for color in color_set:
+            color.brightness = brightness
+
+        return color_set
 
     @classmethod
     def hex(self, hex_str, brightness=Color.DEFAULT_BRIGHTNESS):

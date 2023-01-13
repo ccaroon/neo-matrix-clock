@@ -104,8 +104,8 @@ class Digit:
 
 class DigitalClock(Clock):
     # COLOR_SET = ColorFactory.random(count=3)
-    # COLOR_SET = Season.get("current")
-    COLOR_SET = ColorFactory.random(count=3)
+    COLOR_SET = Season.get("current")
+    # COLOR_SET = ColorFactory.random(count=3)
     # COLOR_SET = [
     #     ColorFactory.get("orange"),
     #     ColorFactory.get("blue"),

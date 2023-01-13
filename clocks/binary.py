@@ -6,8 +6,8 @@ from .clock import Clock
 class BinaryClock(Clock):
 
     OFF          = ColorFactory.get("black")
-    # SEASON       = Season.get("current")
-    SEASON = ColorFactory.random(count=3)
+    SEASON       = Season.get("current")
+    # SEASON = ColorFactory.random(count=3)
     # SEASON = Holiday.get_current()
     HOUR_COLOR   = SEASON[0]
     MINUTE_COLOR = SEASON[1]

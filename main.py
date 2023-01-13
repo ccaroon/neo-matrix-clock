@@ -34,16 +34,19 @@ from machine import Pin
 from neo_matrix import NeoMatrix
 from clocks.binary import BinaryClock
 from clocks.digital import DigitalClock
+from clocks.fibonacci import FibonacciClock
 
 button = Pin(27, Pin.IN, Pin.PULL_UP)
 
 matrix = NeoMatrix(rgbw=False)
 binary_clock = BinaryClock(matrix)
 digital_clock = DigitalClock(matrix, display24h=False)
+fib_clock = FibonacciClock(matrix)
 
 CLOCKS = [
     binary_clock,
-    digital_clock
+    digital_clock,
+    fib_clock
 ]
 CURRENT_CLOCK = 0
 
@@ -55,6 +58,7 @@ def change_clock(p):
 
 button.irq(change_clock)
 while True:
-    CLOCKS[CURRENT_CLOCK].tick()
-    time.sleep(1)
+    clock = CLOCKS[CURRENT_CLOCK]
+    clock.tick()
+    time.sleep(clock.TICK_INTERVAL)
 # ------------------------------------------------------------------------------
