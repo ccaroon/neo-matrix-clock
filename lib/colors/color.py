@@ -30,5 +30,8 @@ class Color:
 
         return color_tuple
 
+    def __eq__(self, value):
+        return self.as_tuple(True) == value.as_tuple(True)
+
     def __str__(self) -> str:
         return str(self.as_tuple())

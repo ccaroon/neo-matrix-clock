@@ -18,6 +18,9 @@ class NeoMatrix:
         self.__matrix = NeoPixel(pin, self.PIXELS, bpp=bpp)
         self.__rgbw = rgbw
 
+    def __row_col_to_num(self, row, col):
+        return (row * 8) + col
+
     def clear(self):
         self.__matrix.fill(self.OFF.as_tuple(self.__rgbw))
         self.__matrix.write()
@@ -95,8 +98,24 @@ class NeoMatrix:
         self.__matrix[num] = color.as_tuple(self.__rgbw)
 
     def set_rc(self, row, col, color):
-        num = (row * 8) + col
+        num = self.__row_col_to_num(row, col)
         self.set(num, color)
+
+    def toggle(self, num, color):
+        curr_color = self.__matrix[num]
+        if curr_color == self.OFF.as_tuple(self.__rgbw):
+            self.__matrix[num] = color.as_tuple(self.__rgbw)
+        else:
+            self.__matrix[num] = self.OFF.as_tuple(self.__rgbw)
+
+    def toggle_rc(self, row, col, color):
+        num = self.__row_col_to_num(row, col)
+        self.toggle(num, color)
+
+    def invert(self, color=ColorFactory.get("white")):
+        for num in range(self.PIXELS):
+            self.toggle(num, color)
+        self.update()
 
     def update(self):
         self.__matrix.write()

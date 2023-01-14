@@ -7,7 +7,7 @@ from lib.colors.holiday import Holiday
 from .clock import Clock
 class FibonacciClock(Clock):
 
-    TICK_INTERVAL = 60
+    TICK_INTERVAL = 15
 
     OFF        = None
     ONE        = "one"
@@ -42,8 +42,10 @@ class FibonacciClock(Clock):
     }
 
     NUMBER_MAP = (
-        # ZERO => Placeholder, not used, makes indexing easier
-        OFF,
+        # ZERO => All lights off
+        (
+            (OFF, OFF, OFF, OFF, OFF),
+        ),
 
         # ONE =>  1 | 1`
         (
@@ -54,7 +56,7 @@ class FibonacciClock(Clock):
         # TWO => 1,1` | 2
         (
             (ONE, ONE_PRIME, OFF, OFF, OFF),
-            (TWO, OFF, OFF, OFF, OFF)
+            (TWO, OFF, OFF, OFF, OFF),
         ),
 
         # THREE => 1,2 | 1`,2 | 3
@@ -75,7 +77,7 @@ class FibonacciClock(Clock):
         (
             (ONE, ONE_PRIME, THREE, OFF, OFF),
             (TWO, THREE, OFF, OFF, OFF),
-            (FIVE, OFF, OFF, OFF, OFF)
+            (FIVE, OFF, OFF, OFF, OFF),
         ),
 
         # SIX =>  1,5 | 1`,5 | 1,2,3 | 1`,2,3
@@ -83,39 +85,39 @@ class FibonacciClock(Clock):
             (ONE, FIVE, OFF, OFF, OFF),
             (ONE_PRIME, FIVE, OFF, OFF, OFF),
             (ONE, TWO, THREE, OFF, OFF),
-            (ONE_PRIME, TWO, THREE, OFF, OFF)
+            (ONE_PRIME, TWO, THREE, OFF, OFF),
         ),
 
         # SEVEN => 2,5 | 1,1`,2,3
         (
             (TWO, FIVE,      OFF, OFF,   OFF),
-            (ONE, ONE_PRIME, TWO, THREE, OFF)
+            (ONE, ONE_PRIME, TWO, THREE, OFF),
         ),
 
         # EIGHT => 3,5 | 1,2,5 | 1`,2,5
         (
             (THREE, FIVE, OFF, OFF, OFF),
             (ONE, TWO, FIVE, OFF, OFF),
-            (ONE_PRIME, TWO, FIVE, OFF, OFF)
+            (ONE_PRIME, TWO, FIVE, OFF, OFF),
         ),
 
         # NINE => 1,1`,2,5 | 1,3,5 | 1`,3,5
         (
             (ONE, ONE_PRIME, TWO, FIVE, OFF),
             (ONE, THREE, FIVE, OFF, OFF),
-            (ONE_PRIME, THREE, FIVE, OFF, OFF)
+            (ONE_PRIME, THREE, FIVE, OFF, OFF),
         ),
 
         # TEN => 2,3,5 | 1,1`,3,5
         (
             (TWO, THREE, FIVE, OFF, OFF),
-            (ONE, ONE_PRIME, THREE, FIVE, OFF)
+            (ONE, ONE_PRIME, THREE, FIVE, OFF),
         ),
 
         # ELEVEN => 1,2,3,5 | 1`,2,3,5
         (
             (ONE, TWO, THREE, FIVE, OFF),
-            (ONE_PRIME, TWO, THREE, FIVE, OFF)
+            (ONE_PRIME, TWO, THREE, FIVE, OFF),
         ),
 
         # TWELVE => 1,1`,2,3,5
@@ -133,9 +135,9 @@ class FibonacciClock(Clock):
     COLOR_MINUTES = 2
 
     def _update(self):
-        (hour, minutes, _) = self._get_hms()
+        (hour, minutes, seconds) = self._get_hms()
 
-        print("%02d:%02d" % (hour, minutes))
+        print("%02d:%02d:%02d" % (hour, minutes, seconds))
 
         hour = hour - 12 if hour > 12 else hour
         minutes = int(minutes / 5)

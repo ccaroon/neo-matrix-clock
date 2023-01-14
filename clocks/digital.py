@@ -115,7 +115,7 @@ class DigitalClock(Clock):
     OFF            = ColorFactory.get("black")
     HOURS_COLORS   = (COLOR_SET[0], COLOR_SET[1])
     MINUTES_COLORS = (COLOR_SET[1], COLOR_SET[0])
-    SECONDS_COLOR  = COLOR_SET[2]
+    SECONDS_COLOR  = COLOR_SET[3]
     AM_PM_COLOR    = COLOR_SET[2]
 
     AM_PIXELS = (
@@ -138,10 +138,7 @@ class DigitalClock(Clock):
         self.__display24h = display24h
 
     def _update(self):
-        now = self._rtc.datetime()
-        hour = now[4]
-        minutes = now[5]
-        seconds = now[6]
+        (hour, minutes, seconds) = self._get_hms()
         is_am = True if hour < 12 else False
 
         print("%02d:%02d:%02d" % (hour, minutes, seconds))
@@ -171,12 +168,16 @@ class DigitalClock(Clock):
             self._matrix.set_rc(loc[0], loc[1], self.OFF)
 
         # Seconds "ticker"
-        # TODO: every second, tick up, then back down, up,down,up,down
-        count = int(seconds/12)
+        count = seconds % 5
+        count2min = int(seconds/12)
         for idx, loc in enumerate(self.SECONDS_PIXELS):
-            color = self.SECONDS_COLOR if idx <= count else self.OFF
-            # print("(%d,%d) = %s" % (loc[0], loc[1], color))
-            self._matrix.set_rc(loc[0], loc[1], color)
+            if idx <= count:
+                color = self.SECONDS_COLOR
+                if idx <= count2min:
+                    color = self.AM_PM_COLOR
+                self._matrix.set_rc(loc[0], loc[1], color)
+            else:
+                self._matrix.set_rc(loc[0], loc[1], self.OFF)
 
     def __set_number(self, number, colors, zero_pad=True):
         # 1. split into digits

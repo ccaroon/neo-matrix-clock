@@ -9,7 +9,7 @@ class Clock:
         self._rtc = RTC()
         self._matrix = matrix
 
-    def _update():
+    def _update(self):
         """ Called to Update the Clock Display """
         raise NotImplementedError("Must be overridden in sub-class with code that updates the Clock display")
 

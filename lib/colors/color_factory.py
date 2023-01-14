@@ -28,11 +28,13 @@ class ColorFactory:
             COLORS["red"],
             COLORS["green"],
             COLORS["blue"],
+            COLORS["black"]
         ),
         "Y+B=G": (
             COLORS["yellow"],
             COLORS["blue"],
             COLORS["green"],
+            COLORS["black"]
         )
     }
 
@@ -40,7 +42,7 @@ class ColorFactory:
     def get(cls, name, brightness=Color.DEFAULT_BRIGHTNESS):
         color = cls.COLORS.get(name)
         if color is None:
-            raise ValueError("Unknown Color: '%d'" % name)
+            raise ValueError("Unknown Color: '%s'" % name)
 
         color.brightness = brightness
         return color

@@ -32,10 +32,7 @@ class BinaryClock(Clock):
     ]
 
     def _update(self):
-        now = self._rtc.datetime()
-        hour = now[4]
-        minutes = now[5]
-        seconds = now[6]
+        (hour, minutes, seconds) = self._get_hms()
 
         print("%02d:%02d:%02d" % (hour, minutes, seconds))
         self.__set_number(hour, self.HOUR_PIXELS, self.HOUR_COLOR)
