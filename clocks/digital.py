@@ -1,106 +1,8 @@
 from lib.colors.color_factory import ColorFactory
 from lib.colors.season import Season
+from lib.glyph import Glyph
 
 from .clock import Clock
-
-# TODO: Factor this out to another module/class
-class Digit:
-    TEMPLATE = [
-        (0,0), (0,1), (0,2),
-        (1,0),        (1,2),
-        (2,0), (2,1), (2,2),
-        (3,0),        (3,2),
-        (4,0), (4,1), (4,2),
-    ]
-
-    ZERO = [
-        1,1,1,
-        1,  1,
-        1,0,1,
-        1,  1,
-        1,1,1,
-    ]
-
-    ONE = [
-        0,0,1,
-        0,  1,
-        0,0,1,
-        0,  1,
-        0,0,1,
-    ]
-    TWO = [
-        1,1,1,
-        0,  1,
-        1,1,1,
-        1,  0,
-        1,1,1,
-    ]
-    THREE = [
-        1,1,1,
-        0,  1,
-        1,1,1,
-        0,  1,
-        1,1,1,
-    ]
-    FOUR = [
-        1,0,1,
-        1,  1,
-        1,1,1,
-        0,  1,
-        0,0,1,
-    ]
-    FIVE = [
-        1,1,1,
-        1,  0,
-        1,1,1,
-        0,  1,
-        1,1,1,
-    ]
-    SIX = [
-        1,0,0,
-        1,  0,
-        1,1,1,
-        1,  1,
-        1,1,1,
-    ]
-    SEVEN = [
-        1,1,1,
-        0,  1,
-        0,0,1,
-        0,  1,
-        0,0,1,
-    ]
-    EIGHT = [
-        1,1,1,
-        1,  1,
-        1,1,1,
-        1,  1,
-        1,1,1,
-    ]
-    NINE = [
-        1,1,1,
-        1,  1,
-        1,1,1,
-        0,  1,
-        0,0,1,
-    ]
-
-    DIGITS = {
-        0: ZERO,
-        1: ONE,
-        2: TWO,
-        3: THREE,
-        4: FOUR,
-        5: FIVE,
-        6: SIX,
-        7: SEVEN,
-        8: EIGHT,
-        9: NINE
-    }
-
-    @classmethod
-    def get_pixels(cls, digit):
-        return cls.DIGITS[digit]
 
 class DigitalClock(Clock):
     # COLOR_SET = ColorFactory.random(count=3)
@@ -187,13 +89,6 @@ class DigitalClock(Clock):
         col_offset = 1
         for idx, digit in enumerate((d0, d1)):
             color = self.OFF if idx == 0 and digit == 0 and zero_pad is False else colors[idx]
-            self.__draw_digit(digit, col_offset, color)
+            glyph = Glyph.get(digit)
+            self._matrix.draw_glyph(glyph, color, col_offset=col_offset)
             col_offset += 3
-
-    def __draw_digit(self, digit, offset, color):
-        pixels = Digit.get_pixels(digit)
-        for idx, loc in enumerate(Digit.TEMPLATE):
-            if pixels[idx]:
-                self._matrix.set_rc(loc[0], loc[1]+offset, color)
-            else:
-                self._matrix.set_rc(loc[0], loc[1]+offset, self.OFF)

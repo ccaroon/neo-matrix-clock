@@ -101,6 +101,18 @@ class NeoMatrix:
         num = self.__row_col_to_num(row, col)
         self.set(num, color)
 
+    def draw_glyph(self, glyph, color, **kwargs):
+        row_offset = kwargs.get("row_offset", 0)
+        col_offset = kwargs.get("col_offset", 0)
+
+        for px in glyph:
+            px_color = self.OFF
+            if px["on"]:
+                px_color = color
+
+            # TODO: Handle index-out-of-range for row & col
+            self.set_rc(px["row"]+row_offset, px["col"]+col_offset, px_color)
+
     def toggle(self, num, color):
         curr_color = self.__matrix[num]
         if curr_color == self.OFF.as_tuple(self.__rgbw):

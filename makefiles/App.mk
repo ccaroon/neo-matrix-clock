@@ -1,7 +1,7 @@
 app-usage:
 	@echo "Usage: 'include App.mk'"
 
-install: boot.pyc main.pyc lib/secrets.py libs clocks lib/colors
+install: boot.pyc main.pyc lib/secrets.py libs clocks lib/colors lib/glyphs
 
 boot.pyc: boot.py
 	touch boot.pyc
@@ -37,6 +37,14 @@ lib/colors/__init__.pyc: lib/colors/__init__.py
 	touch $@
 	ampy --port $(PORT) mkdir lib/colors
 	make upload-file FILE=lib/colors/__init__.py
+
+# GLYPHS
+lib/glyphs: lib/glyphs/__init__.pyc $(GLYPHS)
+
+lib/glyphs/__init__.pyc: lib/glyphs/__init__.py
+	touch $@
+	ampy --port $(PORT) mkdir lib/glyphs
+	make upload-file FILE=lib/glyphs/__init__.py
 
 %.pyc: %.py
 	touch $@
