@@ -102,11 +102,12 @@ class NeoMatrix:
         self.set(num, color)
 
     def draw_glyph(self, glyph, color, **kwargs):
+        color2 = kwargs.get("color2", self.OFF)
         row_offset = kwargs.get("row_offset", 0)
         col_offset = kwargs.get("col_offset", 0)
 
         for px in glyph:
-            px_color = self.OFF
+            px_color = color2
             if px["on"]:
                 px_color = color
 

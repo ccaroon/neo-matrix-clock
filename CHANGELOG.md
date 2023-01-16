@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 2023-01-16
+* Created Glyph class as a way to generically "draw" any type of alpha-num, etc.
+* Implemented Digits (0-9) as Glyphs
+* Implemented Emojis as Glyphs
+* Added `draw_glyph()` method to NeoMatrix class
+* Updated DigitalClock to use Glyph
+
 ## 2023-01-08
 * NeoMatrix now works with RGB or RGBW LEDS
 * Fixed AM/PM indicator bug in Digital clock
