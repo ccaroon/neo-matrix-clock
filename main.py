@@ -48,7 +48,7 @@ CLOCKS = [
     digital_clock,
     fib_clock
 ]
-CURRENT_CLOCK = 0
+CURRENT_CLOCK = 1
 
 def change_clock(p):
     global CLOCKS, CURRENT_CLOCK

@@ -1,3 +1,4 @@
+import time
 from lib.colors.color_factory import ColorFactory
 from lib.colors.season import Season
 from lib.glyph import Glyph
@@ -80,6 +81,14 @@ class DigitalClock(Clock):
                 self._matrix.set_rc(loc[0], loc[1], color)
             else:
                 self._matrix.set_rc(loc[0], loc[1], self.OFF)
+
+    def test(self):
+        color = ColorFactory.get("green")
+        for i in range(10):
+            glyph = Glyph.get(i)
+            self._matrix.draw_glyph(glyph, color, col_offset=2)
+            self._matrix.update()
+            time.sleep(1)
 
     def __set_number(self, number, colors, zero_pad=True):
         # 1. split into digits
