@@ -7,7 +7,7 @@ from lib.colors.holiday import Holiday
 from .clock import Clock
 class FibonacciClock(Clock):
 
-    TICK_INTERVAL = 15
+    TICK_INTERVAL = 5
 
     OFF        = None
     ONE        = "one"

@@ -22,8 +22,7 @@ class NeoMatrix:
         return (row * 8) + col
 
     def clear(self):
-        self.__matrix.fill(self.OFF.as_tuple(self.__rgbw))
-        self.__matrix.write()
+        self.fill(self.OFF)
 
     def fill(self, color):
         self.__matrix.fill(color.as_tuple(self.__rgbw))

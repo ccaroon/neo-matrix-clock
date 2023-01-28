@@ -1,5 +1,5 @@
 import lib.glyphs.digit as digit
-import lib.glyphs.emoji as emoji
+import lib.glyphs.icon as icon
 
 class Glyph:
     # data == [{"row", "col", "color"}]
@@ -27,9 +27,9 @@ class Glyph:
         if glyph_name in digit.DATA.keys():
             template = digit.TEMPLATE
             pixels = digit.DATA.get(glyph_name)
-        elif glyph_name in emoji.DATA.keys():
-            template = emoji.TEMPLATE
-            pixels = emoji.DATA.get(glyph_name)
+        elif glyph_name in icon.DATA.keys():
+            template = icon.TEMPLATE
+            pixels = icon.DATA.get(glyph_name)
 
         # TODO: error handling if glyph set not found
 

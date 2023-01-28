@@ -35,6 +35,7 @@ from neo_matrix import NeoMatrix
 from clocks.binary import BinaryClock
 from clocks.digital import DigitalClock
 from clocks.fibonacci import FibonacciClock
+from clocks.weather import WeatherClock
 
 button = Pin(27, Pin.IN, Pin.PULL_UP)
 
@@ -42,13 +43,15 @@ matrix = NeoMatrix(rgbw=False)
 binary_clock = BinaryClock(matrix)
 digital_clock = DigitalClock(matrix, display24h=False)
 fib_clock = FibonacciClock(matrix)
+weather_clock = WeatherClock(matrix, display24h=False)
 
 CLOCKS = [
     binary_clock,
     digital_clock,
+    weather_clock,
     fib_clock
 ]
-CURRENT_CLOCK = 1
+CURRENT_CLOCK = 2
 
 def change_clock(p):
     global CLOCKS, CURRENT_CLOCK

@@ -50,9 +50,9 @@ class DigitalClock(Clock):
         if int(seconds/5) % 2 == 0:
             if not self.__display24h:
                 hour = hour-12 if hour > 12 else hour
-            self.__set_number(hour, self.HOURS_COLORS, zero_pad=self.__display24h)
+            self._set_number(hour, self.HOURS_COLORS, zero_pad=self.__display24h)
         else:
-            self.__set_number(minutes, self.MINUTES_COLORS)
+            self._set_number(minutes, self.MINUTES_COLORS)
 
         # show AM/PM indicator
         am_pm_on = None
@@ -90,7 +90,7 @@ class DigitalClock(Clock):
             self._matrix.update()
             time.sleep(1)
 
-    def __set_number(self, number, colors, zero_pad=True):
+    def _set_number(self, number, colors, zero_pad=True):
         # 1. split into digits
         d0 = int(number / 10)
         d1 = number % 10

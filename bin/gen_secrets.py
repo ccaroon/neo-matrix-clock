@@ -1,24 +1,18 @@
 #!/usr/bin/env python
 import yaml
-
+import pprint
 # .secrets file should be formatted thusly
 # ---------------------------------------
 # secrets:
-#     ssid: SSID
-#     password: PASSWD
-#     timezone: "America/New_York"
-#     aio_username: NONE
-#     aio_key: None
+#   key1: value1
+#   key2: value2
 # ---------------------------------------
 with open('.secrets', "r") as file:
     data = yaml.safe_load(file)
 
 secrets = data.get('secrets', {})
+
 with open("./lib/secrets.py", "w") as file:
     file.write(F"""
-secrets = {{
-    'ssid':         '{secrets.get("ssid", "NONE")}',
-    'password':     '{secrets.get("password", "NONE")}',
-    'timezone':     "{secrets.get("timezone","NONE")}",
-}}
+secrets = {pprint.pformat(secrets)}
 """)
