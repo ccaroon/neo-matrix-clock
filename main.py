@@ -58,6 +58,7 @@ def change_clock(p):
     if p.value() == 1:
         matrix.clear()
         CURRENT_CLOCK = 0 if CURRENT_CLOCK >= len(CLOCKS)-1 else CURRENT_CLOCK + 1
+        CLOCKS[CURRENT_CLOCK].prep()
 
 button.irq(change_clock)
 while True:

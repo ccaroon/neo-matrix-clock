@@ -17,6 +17,10 @@ class Clock:
         now = self._rtc.datetime()
         return (now[4], now[5], now[6])
 
+    # TODO: better name
+    def prep(self):
+        pass
+
     def tick(self):
         self._update()
         self._matrix.update()
