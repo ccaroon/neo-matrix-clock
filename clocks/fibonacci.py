@@ -7,7 +7,7 @@ from lib.colors.holiday import Holiday
 from .clock import Clock
 class FibonacciClock(Clock):
 
-    TICK_INTERVAL = 5
+    UPDATE_FREQ = 60 # seconds
 
     OFF        = None
     ONE        = "one"
@@ -134,10 +134,12 @@ class FibonacciClock(Clock):
     COLOR_HOURS   = 1
     COLOR_MINUTES = 2
 
-    def _update(self):
-        (hour, minutes, seconds) = self._get_hms()
+    def _tick(self, update_display=False):
+        if update_display:
+            self.__update_display()
 
-        print("%02d:%02d:%02d" % (hour, minutes, seconds))
+    def __update_display(self):
+        (hour, minutes, _) = self._get_hms()
 
         hour = hour - 12 if hour > 12 else hour
         minutes = int(minutes / 5)

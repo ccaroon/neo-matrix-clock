@@ -31,10 +31,9 @@ class BinaryClock(Clock):
         ( (1,6), (2,6), (3,6), (4,6) )
     ]
 
-    def _update(self):
+    def _tick(self, update_display=False):
         (hour, minutes, seconds) = self._get_hms()
 
-        print("%02d:%02d:%02d" % (hour, minutes, seconds))
         self.__set_number(hour, self.HOUR_PIXELS, self.HOUR_COLOR)
         self.__set_number(minutes, self.MINUTE_PIXELS, self.MINUTE_COLOR)
         self.__set_number(seconds, self.SECOND_PIXELS, self.SECOND_COLOR)

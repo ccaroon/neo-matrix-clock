@@ -51,18 +51,24 @@ CLOCKS = [
     weather_clock,
     fib_clock
 ]
-CURRENT_CLOCK = 2
+CURRENT_CLOCK = 0
+
+DEBOUNCE_DELAY = 75 # ms
+DEBOUNCE_LAST = 0
 
 def change_clock(p):
-    global CLOCKS, CURRENT_CLOCK
-    if p.value() == 1:
-        matrix.clear()
-        CURRENT_CLOCK = 0 if CURRENT_CLOCK >= len(CLOCKS)-1 else CURRENT_CLOCK + 1
-        CLOCKS[CURRENT_CLOCK].prep()
+    global CLOCKS, CURRENT_CLOCK, DEBOUNCE_DELAY, DEBOUNCE_LAST
+
+    if time.ticks_diff(time.ticks_ms(), DEBOUNCE_LAST) > DEBOUNCE_DELAY:
+        DEBOUNCE_LAST = time.ticks_ms()
+        if p.value() == 1:
+            matrix.clear()
+            CURRENT_CLOCK = 0 if CURRENT_CLOCK >= len(CLOCKS)-1 else CURRENT_CLOCK + 1
+            CLOCKS[CURRENT_CLOCK].reset()
 
 button.irq(change_clock)
 while True:
     clock = CLOCKS[CURRENT_CLOCK]
     clock.tick()
-    time.sleep(clock.TICK_INTERVAL)
+    time.sleep(1)
 # ------------------------------------------------------------------------------

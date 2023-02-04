@@ -40,11 +40,9 @@ class DigitalClock(Clock):
         super().__init__(matrix)
         self.__display24h = display24h
 
-    def _update(self):
+    def _tick(self, update_display=False):
         (hour, minutes, seconds) = self._get_hms()
         is_am = True if hour < 12 else False
-
-        print("%02d:%02d:%02d" % (hour, minutes, seconds))
 
         # Alternate showing hours & minutes every 10 seconds
         if int(seconds/5) % 2 == 0:

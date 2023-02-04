@@ -13,8 +13,8 @@ class WeatherClock(DigitalClock):
     OFF = ColorFactory.get("black")
     ERROR_COLOR = ColorFactory.get("red")
 
-    # In minutes
-    UPDATE_FREQ = 5
+    # In seconds
+    UPDATE_FREQ = 5 * 60
 
     HUMIDITY_PIXELS = (
         (4,0),
@@ -31,8 +31,6 @@ class WeatherClock(DigitalClock):
         self.__temp = 0
         self.__humd = 0
 
-        self.prep()
-
     def __temp_to_color(self, temp):
         color = ColorFactory.hex("FFFFFF")
 
@@ -48,13 +46,13 @@ class WeatherClock(DigitalClock):
         elif temp > 55 and temp <= 64:
             # cyan
             color = ColorFactory.hex("04fbe8")
-        elif temp > 64 and temp <=75:
+        elif temp > 64 and temp <= 75:
             # green
             color = ColorFactory.hex("33e108")
         elif temp > 75 and temp <= 85:
             # yellow
             color = ColorFactory.hex("f9f504")
-        elif temp > 85 and temp <= 90:
+        elif temp > 85 and temp <= 95:
             # orange
             color = ColorFactory.hex("f97304")
         else:
@@ -64,19 +62,18 @@ class WeatherClock(DigitalClock):
         return color
 
     def __humd_to_color(self, humd):
-        color = ColorFactory.hex("FFFFFF")
+        color = None
 
         if humd <= 25:
             color = ColorFactory.hex("FFFFFF")
         elif humd > 25 and humd <= 50:
-            color = ColorFactory.hex("9999BB")
+            color = ColorFactory.hex("8080FF")
         elif humd > 50 and humd <= 75:
-            color = ColorFactory.hex("9999DD")
+            color = ColorFactory.hex("4040FF")
         else:
-            color = ColorFactory.hex("9999FF")
+            color = ColorFactory.hex("2020FF")
 
         return color
-
 
     def __display_error(self, msg):
         print(msg)
@@ -152,22 +149,19 @@ class WeatherClock(DigitalClock):
         else:
             self.__display_error("Failed to get Humidity from WeatherStation feed.")
 
-    def _update(self):
-        (_, minutes, seconds) = self._get_hms()
-
-        if minutes % self.UPDATE_FREQ == 0 and seconds == 0:
+    def _tick(self, update_display=False):
+        if update_display:
             self.__display_temperature()
             self.__display_humidity()
+            print("%d℉ | %d%%" % (self.__temp, self.__humd))
         else:
+            (_, _, seconds) = self._get_hms()
             color = self.__temp_to_color(self.__temp) if seconds % 2 == 0 else self.OFF
             self._matrix.set_rc(0,7, color)
-            print("(%02d:%02d) - %d℉ | %d%%" % (minutes, seconds, self.__temp, self.__humd))
-
-    def prep(self):
-        self.__display_temperature()
-        self.__display_humidity()
 
     def test(self):
-        temp = self.__aio.get_data("temperature")
-        print(temp)
-        self.__display_error("...Test...")
+        for idx,humd in enumerate((5,35,65,95)):
+            color = self.__humd_to_color(humd)
+            self._matrix.set(idx, color)
+
+        self._matrix.update()
