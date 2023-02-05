@@ -22,26 +22,26 @@
 * [x] Add more seasons/holidays colors
   - [x] Factor out Season from ColorFactory
   - [x] Factor out Holidays from ColorFactory
-* [ ] Better way to mkdirs and install files (Makefile)
-* [ ] Glyphs lib to draw chars & digits
-  - [ ] Refactory DigitalClock to use
-* [ ] General code cleanup
-* [ ] Update clock code to be able to change colors on-the-fly (for season & holidays)
-* [ ] Move this list to a Trello project
+* [M] Better way to mkdirs and install files (Makefile)
+* [x] Glyphs lib to draw chars & digits
+  - [x] Refactory DigitalClock to use
+* [-] General code cleanup
+* [M] Update clock code to be able to change colors on-the-fly (for season & holidays)
+* [x] Move this list to a Trello project
 
 ## Clocks
 * [x] Binary
-* [ ] Binary-coded sexagesimal
+* [M] Binary-coded sexagesimal
 * [x] Fibonacci
 * [x] Digital
   - [x] seconds "tick" up&down side pixels
   - [x] alternate showing hour & mins for X seconds at a time
   - [?] colors: hour/min/both i.e. mix colors in digits to show hour&min at same time
-* [ ] Countdown in Days
-* [ ] Morse Code
+* [M] Countdown in Days
+* [M] Morse Code
 
 ## Features
-* [ ] Bluetooth control
+* [M] Bluetooth control
 
 ## Notes
 * BLE Example: https://learn.adafruit.com/circuitpython-feather-ble-neopixel-hat

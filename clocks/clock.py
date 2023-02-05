@@ -1,6 +1,9 @@
 import time
 from machine import RTC
 
+from lib.colors.season import Season
+from lib.colors.holiday import Holiday
+
 class Clock:
     UPDATE_FREQ = 1 # in seconds
 
@@ -17,6 +20,13 @@ class Clock:
     def _get_hms(self):
         now = self._rtc.datetime()
         return (now[4], now[5], now[6])
+
+    def _get_color_set(self):
+        holiday = Holiday.get("current")
+
+        color_set = holiday if holiday else Season.get("current")
+
+        return color_set
 
     def reset(self):
         self.__last_update = 0

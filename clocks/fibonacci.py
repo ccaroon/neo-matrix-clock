@@ -1,8 +1,6 @@
 import random
 
 from lib.colors.color_factory import ColorFactory
-from lib.colors.season import Season
-from lib.colors.holiday import Holiday
 
 from .clock import Clock
 class FibonacciClock(Clock):
@@ -127,10 +125,8 @@ class FibonacciClock(Clock):
     )
 
     BLACK = ColorFactory.get("black")
-    # COLOR_SET = ColorFactory.get_set("Y+B=G")
-    COLOR_SET = Season.get("current")
 
-    # What color to use from the COLOR_SET for each part of the time
+    # What color to use from the choosen color_set for each part of the time
     COLOR_HOURS   = 1
     COLOR_MINUTES = 2
 
@@ -143,6 +139,8 @@ class FibonacciClock(Clock):
 
         hour = hour - 12 if hour > 12 else hour
         minutes = int(minutes / 5)
+
+        color_set = self._get_color_set()
 
         # Which boxes to turn on
         hour_boxes = self.__number_to_boxes(hour)
@@ -174,7 +172,7 @@ class FibonacciClock(Clock):
         # Update display
         for box_name, color_id in box_colors.items():
             box = self.BOXES[box_name]
-            color = self.COLOR_SET[color_id-1] if color_id > 0 else self.BLACK
+            color = color_set[color_id-1] if color_id > 0 else self.BLACK
 
             for loc in box:
                 self._matrix.set_rc(loc[0], loc[1], color)

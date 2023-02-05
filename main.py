@@ -1,33 +1,15 @@
 # -- DEBUGGING
 from lib.colors.color_factory import ColorFactory
-# ------------------------------------------------------------------------------
 
-# -- BINARY CLOCK --
-# from neo_matrix import NeoMatrix
-# from clocks.binary import BinaryClock
-
-# matrix = NeoMatrix(rgbw=True)
-# clock = BinaryClock(matrix)
-# clock.run()
-# ------------------------------------------------------------------------------
-
-# -- DIGITAL CLOCK --
-# from neo_matrix import NeoMatrix
-# from clocks.digital import DigitalClock
-
-# matrix = NeoMatrix(rgbw=True)
-# clock = DigitalClock(matrix, display24h=False)
-# clock.run()
 # ------------------------------------------------------------------------------
 
 # -- BUTTON TEST CODE --
 # from machine import Pin
-
 # button = Pin(27, Pin.IN, Pin.PULL_UP)
 # button.irq(lambda p: print("Hello, World!") if p.value() == 1 else 0)
 # ------------------------------------------------------------------------------
 
-# -- SWITCHABLE
+# -- SWITCHABLE CLOCKS
 import time
 from machine import Pin
 

@@ -1,17 +1,9 @@
 from lib.colors.color_factory import ColorFactory
-from lib.colors.season import Season
-from lib.colors.holiday import Holiday
 
 from .clock import Clock
 class BinaryClock(Clock):
 
-    OFF          = ColorFactory.get("black")
-    SEASON       = Season.get("current")
-    # SEASON = ColorFactory.random(count=3)
-    # SEASON = Holiday.get_current()
-    HOUR_COLOR   = SEASON[0]
-    MINUTE_COLOR = SEASON[1]
-    SECOND_COLOR = SEASON[2]
+    OFF = ColorFactory.get("black")
 
     # As Row,Col tuples
     HOUR_PIXELS = [
@@ -34,9 +26,11 @@ class BinaryClock(Clock):
     def _tick(self, update_display=False):
         (hour, minutes, seconds) = self._get_hms()
 
-        self.__set_number(hour, self.HOUR_PIXELS, self.HOUR_COLOR)
-        self.__set_number(minutes, self.MINUTE_PIXELS, self.MINUTE_COLOR)
-        self.__set_number(seconds, self.SECOND_PIXELS, self.SECOND_COLOR)
+        color_set = self._get_color_set()
+
+        self.__set_number(hour, self.HOUR_PIXELS, color_set[0])
+        self.__set_number(minutes, self.MINUTE_PIXELS, color_set[1])
+        self.__set_number(seconds, self.SECOND_PIXELS, color_set[2])
 
     def __set_number(self, number, pixel_set, on_color):
         # 1. split into digits

@@ -1,25 +1,11 @@
 import time
 from lib.colors.color_factory import ColorFactory
-from lib.colors.season import Season
 from lib.glyph import Glyph
 
 from .clock import Clock
 
 class DigitalClock(Clock):
-    # COLOR_SET = ColorFactory.random(count=3)
-    COLOR_SET = Season.get("current")
-    # COLOR_SET = ColorFactory.random(count=3)
-    # COLOR_SET = [
-    #     ColorFactory.get("orange"),
-    #     ColorFactory.get("blue"),
-    #     ColorFactory.get("cyan", brightness=0.10)
-    # ]
-
-    OFF            = ColorFactory.get("black")
-    HOURS_COLORS   = (COLOR_SET[0], COLOR_SET[1])
-    MINUTES_COLORS = (COLOR_SET[1], COLOR_SET[0])
-    SECONDS_COLOR  = COLOR_SET[3]
-    AM_PM_COLOR    = COLOR_SET[2]
+    OFF = ColorFactory.get("black")
 
     AM_PIXELS = (
         (0,0), (1,0)
@@ -40,17 +26,31 @@ class DigitalClock(Clock):
         super().__init__(matrix)
         self.__display24h = display24h
 
+    def __get_colors(self):
+        color_set = self._get_color_set()
+
+        colors = {
+            "hours": (color_set[0], color_set[1]),
+            "mins":  (color_set[1], color_set[0]),
+            "secs":  color_set[3],
+            "am_pm": color_set[2]
+        }
+
+        return colors
+
     def _tick(self, update_display=False):
         (hour, minutes, seconds) = self._get_hms()
         is_am = True if hour < 12 else False
+
+        colors = self.__get_colors()
 
         # Alternate showing hours & minutes every 10 seconds
         if int(seconds/5) % 2 == 0:
             if not self.__display24h:
                 hour = hour-12 if hour > 12 else hour
-            self._set_number(hour, self.HOURS_COLORS, zero_pad=self.__display24h)
+            self._set_number(hour, colors["hours"], zero_pad=self.__display24h)
         else:
-            self._set_number(minutes, self.MINUTES_COLORS)
+            self._set_number(minutes, colors["mins"])
 
         # show AM/PM indicator
         am_pm_on = None
@@ -63,7 +63,7 @@ class DigitalClock(Clock):
             am_pm_off = self.AM_PIXELS
 
         for loc in am_pm_on:
-            self._matrix.set_rc(loc[0], loc[1], self.AM_PM_COLOR)
+            self._matrix.set_rc(loc[0], loc[1], colors["am_pm"])
 
         for loc in am_pm_off:
             self._matrix.set_rc(loc[0], loc[1], self.OFF)
@@ -73,9 +73,9 @@ class DigitalClock(Clock):
         count2min = int(seconds/12)
         for idx, loc in enumerate(self.SECONDS_PIXELS):
             if idx <= count:
-                color = self.SECONDS_COLOR
+                color = colors["secs"]
                 if idx <= count2min:
-                    color = self.AM_PM_COLOR
+                    color = colors["am_pm"]
                 self._matrix.set_rc(loc[0], loc[1], color)
             else:
                 self._matrix.set_rc(loc[0], loc[1], self.OFF)

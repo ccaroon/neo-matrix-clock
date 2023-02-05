@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 2021-02-05
+* Updated clock to be able to set the Holiday/Seasonal on-the-fly
+  - i.e. does not require a restart to recogize the change
+
+## 2023-01-28
+* Added WeatherClock
+
 ## 2023-01-16
 * Created Glyph class as a way to generically "draw" any type of alpha-num, etc.
 * Implemented Digits (0-9) as Glyphs
