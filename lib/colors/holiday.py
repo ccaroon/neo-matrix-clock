@@ -93,12 +93,12 @@ class Holiday:
             colors = cls.get_current(brightness)
         else:
             colors = cls.HOLIDAYS.get(name)
+            if colors is None:
+                raise ValueError("Unknown Holiday: '%s'" % name)
 
-        if colors is None:
-            raise ValueError("Unknown Holiday: '%d'" % name)
-
-        for color in colors:
-            color.brightness = brightness
+        if colors is not None:
+            for color in colors:
+                color.brightness = brightness
 
         return colors
 
