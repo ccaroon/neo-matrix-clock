@@ -1,7 +1,7 @@
 app-usage:
 	@echo "Usage: 'include App.mk'"
 
-install: boot.pyc main.pyc lib/secrets.py libs clocks lib/colors lib/glyphs
+install: boot.pyc main.pyc libs clocks lib/colors lib/glyphs
 
 boot.pyc: boot.py
 	touch boot.pyc
@@ -20,8 +20,11 @@ clocks/__init__.pyc: clocks/__init__.py
 	make upload-file FILE=clocks/__init__.py
 
 # LIBS
-lib/secrets.py: .secrets
-	./bin/gen_secrets.py
+lib/SECRETS.py: .config/secrets
+	./bin/gen_config_data.py
+
+lib/SETTINGS.py: .config/settings
+	./bin/gen_config_data.py
 
 libs: lib/__init__.pyc $(LIBS)
 

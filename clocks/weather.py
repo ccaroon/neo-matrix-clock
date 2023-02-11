@@ -6,7 +6,7 @@ from .digital import DigitalClock
 from lib.adafruit_io import AdafruitIO
 from lib.colors.color_factory import ColorFactory
 from lib.glyph import Glyph
-from lib.secrets import secrets
+from lib.config import Config
 
 class WeatherClock(DigitalClock):
 
@@ -95,7 +95,8 @@ class WeatherClock(DigitalClock):
         time_e = time.mktime(time_t)
         # Adjust for timezone
         # X hours in seconds
-        time_e += secrets["tz_offset"] * (60 * 60)
+        # TODO: Adjust for DST
+        time_e += Config.setting("datetime:tz_offset") * (60 * 60)
 
         now = time.mktime(time.localtime())
 

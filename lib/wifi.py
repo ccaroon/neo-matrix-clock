@@ -2,7 +2,7 @@ import network
 import urequests
 import utime
 
-import secrets
+from config import Config
 
 class MyWifi:
 
@@ -41,7 +41,10 @@ class MyWifi:
         if cls.WLAN.isconnected():
             print("Already connected to '%s'" % (cls.WLAN.config('essid')))
         else:
-            cls.connect(secrets.secrets['ssid'], secrets.secrets['password'])
+            cls.connect(
+                Config.secret('network:ssid'),
+                Config.secret('network:password')
+            )
 
     @classmethod
     def test(cls, url="http://api.open-notify.org/iss-now.json"):

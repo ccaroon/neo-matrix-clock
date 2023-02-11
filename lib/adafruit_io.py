@@ -1,6 +1,6 @@
 import sys
 
-import secrets
+from config import Config
 
 if sys.platform in ('esp8266', 'esp32'):
     import urequests as requests
@@ -11,8 +11,8 @@ class AdafruitIO:
     BASE_URL = "https://io.adafruit.com/api/v2"
 
     def __init__(self, group):
-        self.__username = secrets.secrets['aio_username']
-        self.__key      = secrets.secrets['aio_key']
+        self.__username = Config.secret("aio:username")
+        self.__key      = Config.secret("aio:key")
 
         self.__group_name = group
 

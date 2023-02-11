@@ -5,6 +5,8 @@ import time
 
 from machine import RTC
 
+from config import Config
+
 class Chronos:
     CLOCK   = RTC()
     CRONTAB = {}
@@ -13,21 +15,53 @@ class Chronos:
         pass
 
     @classmethod
-    def sync(cls, tz_offset=-5):
+    def __convert_period_to_seconds(cls, value, units):
+        seconds = None
+
+        if units == 'D':
+            seconds = value * 86400
+        elif units == 'H':
+            seconds = value * (60 * 60)
+        elif units == 'M':
+            seconds = value * 60
+
+        return (seconds)
+
+    @classmethod
+    def is_dst(cls):
+        is_dst = False
+        now = cls.CLOCK.datetime()
+        date_code = (now[1] * 100) + now[2]
+
+        # GET DST table for current year
+        dst_period = Config.setting("datetime:dst_table:%d" % (now[0]))
+
+        if date_code >= dst_period[0] and date_code <= dst_period[1]:
+            is_dst = True
+
+        # print("DCode: %d | DST? %s | DST from %d to %d" % (date_code, is_dst, dst_period[0], dst_period[1]))
+
+        return is_dst
+
+    @classmethod
+    def sync(cls):
         """Sync with 'Internet' Time"""
-        # TODO: How to handle DST
+        tz_offset = Config.setting("datetime:tz_offset")
         ntptime.host = "time.nist.gov"
         now_secs = ntptime.time()
         tm = time.gmtime(now_secs)
 
+        if cls.is_dst():
+            tz_offset += 1
+
         cls.CLOCK.datetime(
             (
                 # year, month, day
-                tm[0], tm[1], tm[2],
+                tm[0],  tm[1], tm[2],
                 # weekday
                 tm[6] + 1,
-                # hours, minutes, seconds
-                tm[3] + tz_offset, tm[4], tm[5],
+                # hours,           minutes, seconds
+                tm[3] + tz_offset, tm[4],   tm[5],
                 # sub-seconds
                 0
             )
@@ -77,16 +111,3 @@ class Chronos:
     @classmethod
     def check(cls):
         print(cls.now_str())
-
-    @classmethod
-    def __convert_period_to_seconds(cls, value, units):
-        seconds = None
-
-        if units == 'D':
-            seconds = value * 86400
-        elif units == 'H':
-            seconds = value * (60 * 60)
-        elif units == 'M':
-            seconds = value * 60
-
-        return (seconds)
