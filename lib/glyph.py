@@ -37,10 +37,8 @@ class Glyph:
             px_data = {
                 "row": loc[0],
                 "col": loc[1],
-                "on": False
+                "color": pixels[idx]
             }
-            if pixels[idx] == 1:
-                px_data["on"] = True
 
             data.append(px_data)
 

@@ -106,9 +106,11 @@ class NeoMatrix:
         col_offset = kwargs.get("col_offset", 0)
 
         for px in glyph:
-            px_color = color2
-            if px["on"]:
+            px_color = self.OFF
+            if px["color"] == 1:
                 px_color = color
+            elif px["color"] == 2:
+                px_color = color2
 
             # TODO: Handle index-out-of-range for row & col
             self.set_rc(px["row"]+row_offset, px["col"]+col_offset, px_color)

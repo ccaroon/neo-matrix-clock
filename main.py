@@ -1,7 +1,17 @@
 # -- DEBUGGING
 from lib.colors.color_factory import ColorFactory
-
+from lib.glyph import Glyph
 # ------------------------------------------------------------------------------
+
+
+# For Testing Glyphs
+def draw_glyph(i_name, c1, c2="black"):
+    icon = Glyph.get(i_name)
+    color1 = ColorFactory.get(c1)
+    color2 = ColorFactory.get(c2)
+
+    matrix.draw_glyph(icon, color1, color2=color2)
+    matrix.update()
 
 # -- BUTTON TEST CODE --
 # from machine import Pin
