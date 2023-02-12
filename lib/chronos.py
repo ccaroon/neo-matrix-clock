@@ -48,11 +48,9 @@ class Chronos:
         """Sync with 'Internet' Time"""
         tz_offset = Config.setting("datetime:tz_offset")
         ntptime.host = "time.nist.gov"
+        # ntptime is in UTC
         now_secs = ntptime.time()
         tm = time.gmtime(now_secs)
-
-        if cls.is_dst():
-            tz_offset += 1
 
         cls.CLOCK.datetime(
             (
@@ -66,6 +64,15 @@ class Chronos:
                 0
             )
         )
+
+        # Can't check if DST until after datetime is set
+        if cls.is_dst():
+            now = cls.CLOCK.datetime()
+            dst_now = list(now)
+            # Add 1 to hour
+            dst_now[4] += 1
+            # Set DST adjusted time
+            cls.CLOCK.datetime(dst_now)
 
     @classmethod
     def every(cls, period, name, handler, **kwargs):
