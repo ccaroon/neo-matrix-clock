@@ -21,7 +21,7 @@ def draw_glyph(i_name, c1, c2="black"):
 
 # -- SWITCHABLE CLOCKS
 import time
-from machine import Pin
+from machine import Pin, Timer
 
 from neo_matrix import NeoMatrix
 from clocks.binary import BinaryClock
@@ -30,6 +30,7 @@ from clocks.fibonacci import FibonacciClock
 from clocks.weather import WeatherClock
 
 button = Pin(27, Pin.IN, Pin.PULL_UP)
+timer = Timer(0)
 
 matrix = NeoMatrix(rgbw=False)
 binary_clock = BinaryClock(matrix)
@@ -48,17 +49,31 @@ CURRENT_CLOCK = 0
 DEBOUNCE_DELAY = 75 # ms
 DEBOUNCE_LAST = 0
 
-def change_clock(p):
-    global CLOCKS, CURRENT_CLOCK, DEBOUNCE_DELAY, DEBOUNCE_LAST
+def change_clock():
+    global CLOCKS, CURRENT_CLOCK
+
+    matrix.clear()
+    CURRENT_CLOCK = 0 if CURRENT_CLOCK >= len(CLOCKS)-1 else CURRENT_CLOCK + 1
+    CLOCKS[CURRENT_CLOCK].reset()
+
+def handle_timer(t):
+    change_clock()
+
+def handle_button(p):
+    global DEBOUNCE_DELAY, DEBOUNCE_LAST
 
     if time.ticks_diff(time.ticks_ms(), DEBOUNCE_LAST) > DEBOUNCE_DELAY:
         DEBOUNCE_LAST = time.ticks_ms()
         if p.value() == 1:
-            matrix.clear()
-            CURRENT_CLOCK = 0 if CURRENT_CLOCK >= len(CLOCKS)-1 else CURRENT_CLOCK + 1
-            CLOCKS[CURRENT_CLOCK].reset()
+            change_clock()
 
-button.irq(change_clock)
+# Change the Clock when the button is pressed
+button.irq(handle_button)
+
+# Change the Clock every X seconds
+PERIOD=5*60
+timer.init(period=PERIOD*1000, callback=handle_timer)
+# ------------------------------------------------------------------------------
 while True:
     clock = CLOCKS[CURRENT_CLOCK]
     clock.tick()

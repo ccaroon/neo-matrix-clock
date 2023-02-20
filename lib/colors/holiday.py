@@ -6,16 +6,21 @@ from lib.colors.color_factory import ColorFactory
 class Holiday:
     __RTC = RTC()
 
+    TODAY = 0
+
+    PIPER_BDAY = 126
+    CRAIG_BDAY = 219
+    CATE_BDAY = 823
+    NATE_BDAY = 818
+
     NEWYEAR = 101
     VALENTINES = 214
-    BIRTHDAY = 219
     STPATTY = 317
     INDYPENDY = 704
     HALLOWEEN = 1031
     # Not *exactly* the correct day, but close enough :)
     THANKSGIVING = 1125
     CHRISTMAS = 1225
-    TODAY = 108
 
     HOLIDAYS = {
         # For Testing Purposes
@@ -45,8 +50,8 @@ class Holiday:
         ),
         "st_patricks": (
             ColorFactory.get("green"),
-            ColorFactory.get("white"),
             ColorFactory.hex("28FF28"), # light-green
+            ColorFactory.get("white"),
             ColorFactory.get("black")
         ),
         "independence": (
@@ -76,10 +81,13 @@ class Holiday:
     }
 
     HOLIDAY_MAP = {
-        TODAY: "today",
+        TODAY: "new_years",
+        CRAIG_BDAY: "birthday",
+        CATE_BDAY: "birthday",
+        NATE_BDAY: "birthday",
+        PIPER_BDAY: "birthday",
         NEWYEAR: "new_years",
         VALENTINES: "valentines",
-        BIRTHDAY: "birthday",
         STPATTY: "st_patricks",
         INDYPENDY: "independence",
         HALLOWEEN: "halloween",

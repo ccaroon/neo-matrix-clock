@@ -5,6 +5,7 @@ from .digital import DigitalClock
 
 from lib.adafruit_io import AdafruitIO
 from lib.colors.color_factory import ColorFactory
+from lib.colors.holiday import Holiday
 from lib.glyph import Glyph
 from lib.config import Config
 
@@ -126,11 +127,14 @@ class WeatherClock(DigitalClock):
             if data_age >= 10 * 60:
                 color = self.ERROR_COLOR
             else:
-                color = self.__temp_to_color(self.__temp)
+                color_set = Holiday.get("current")
+                if not color_set:
+                    color = self.__temp_to_color(self.__temp)
+                    color_set = [color, color]
 
             # can't display > 99
             display_temp = self.__temp - 100 if self.__temp >= 100 else self.__temp
-            self._set_number(display_temp, [color, color])
+            self._set_number(display_temp, color_set)
         else:
             self.__display_error("Failed to get Temperature from WeatherStation feed.")
 
@@ -140,10 +144,15 @@ class WeatherClock(DigitalClock):
         resp = self.__aio.get_data("humidity")
         if resp['success']:
             self.__humd = int(resp["results"][0]["value"])
+
+            color = self.__humd_to_color(self.__humd)
+            color_set = Holiday.get("current")
+            if color_set:
+                color = color_set[2]
+
             count = round(self.__humd / 20)
             for idx, loc in enumerate(self.HUMIDITY_PIXELS):
                 if idx < count:
-                    color = self.__humd_to_color(self.__humd)
                     self._matrix.set_rc(loc[0], loc[1], color)
                 else:
                     self._matrix.set_rc(loc[0], loc[1], self.OFF)

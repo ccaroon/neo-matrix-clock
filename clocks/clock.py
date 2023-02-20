@@ -1,11 +1,14 @@
 import time
 from machine import RTC
+import random
 
+from lib.colors.color_factory import ColorFactory
 from lib.colors.season import Season
 from lib.colors.holiday import Holiday
 
 class Clock:
     UPDATE_FREQ = 1 # in seconds
+    USE_RANDOM_COLOR_SET = False
 
     def __init__(self, matrix):
         self._rtc = RTC()
@@ -21,10 +24,19 @@ class Clock:
         now = self._rtc.datetime()
         return (now[4], now[5], now[6])
 
-    def _get_color_set(self):
-        holiday = Holiday.get("current")
+    def _daily_random_color_set(self):
+        now = self._rtc.datetime()
+        random.seed(now[0]*10000 + now[1]*100 + now[2])
 
-        color_set = holiday if holiday else Season.get("current")
+        color_set = ColorFactory.random(count=4)
+        return color_set
+
+    def _get_color_set(self):
+        if self.USE_RANDOM_COLOR_SET:
+            color_set = self._daily_random_color_set()
+        else:
+            holiday = Holiday.get("current")
+            color_set = holiday if holiday else Season.get("current")
 
         return color_set
 
