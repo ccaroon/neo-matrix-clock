@@ -1,8 +1,17 @@
-app-usage:
+# -----------------------------------------------------------------------------
+app-default:
 	@echo "Usage: 'include App.mk'"
 
-install: boot.pyc main.pyc libs clocks lib/colors lib/glyphs
+install: boot.pyc main.pyc secrets clocks libs
 
+app-clean:
+	make rm-file FILE=boot.py
+	make rm-file FILE=main.py
+	make rm-dir DIR=clocks
+	make rm-dir DIR=libs
+
+# BOOT & MAIN -----------------------------------------------------------------
+# NOTE: boot and main **must** be .py files ... not .mpy
 boot.pyc: boot.py
 	touch boot.pyc
 	make upload-as-boot FILE=boot.py
@@ -11,43 +20,35 @@ main.pyc: main.py
 	touch main.pyc
 	make upload-as-main FILE=main.py
 
-# CLOCKS
-clocks: clocks/__init__.pyc $(CLOCKS)
+# CLOCKS ----------------------------------------------------------------------
+CLOCK_PY = $(shell find clocks -name "*.py")
+CLOCK_MPY = $(CLOCK_PY:.py=.mpy)
+CLOCK_PKG = $(shell find clocks -name __init__.py | sort --reverse)
+CLOCK_PKG_MPY = $(CLOCK_PKG:.py=.mpy)
+clocks: $(CLOCK_PKG_MPY) $(CLOCK_MPY)
 
-clocks/__init__.pyc: clocks/__init__.py
-	touch $@
-	ampy --port $(PORT) mkdir clocks
-	make upload-file FILE=clocks/__init__.py
+# LIBS ------------------------------------------------------------------------
+LIB_PY = $(shell find lib -name "*.py")
+LIB_MPY = $(LIB_PY:.py=.mpy)
+LIB_PKG = $(shell find lib -name __init__.py | sort --reverse)
+LIB_PKG_MPY = $(LIB_PKG:.py=.mpy)
+libs: $(LIB_PKG_MPY) $(LIB_MPY)
 
-# LIBS
+# GENERATED -------------------------------------------------------------------
+GENERATED = lib/SECRETS.py lib/SETTINGS.py
+secrets: $(GENERATED)
+
 lib/SECRETS.py: .config/secrets
 	./bin/gen_config_data.py
 
 lib/SETTINGS.py: .config/settings
 	./bin/gen_config_data.py
 
-libs: lib/__init__.pyc $(LIBS)
+#------------------------------------------------------------------------------
 
-lib/__init__.pyc: lib/__init__.py
-	touch $@
-	ampy --port $(PORT) mkdir lib
-	make upload-file FILE=lib/__init__.py
-
-# COLORS
-lib/colors: lib/colors/__init__.pyc $(COLORS)
-
-lib/colors/__init__.pyc: lib/colors/__init__.py
-	touch $@
-	ampy --port $(PORT) mkdir lib/colors
-	make upload-file FILE=lib/colors/__init__.py
-
-# GLYPHS
-lib/glyphs: lib/glyphs/__init__.pyc $(GLYPHS)
-
-lib/glyphs/__init__.pyc: lib/glyphs/__init__.py
-	touch $@
-	ampy --port $(PORT) mkdir lib/glyphs
-	make upload-file FILE=lib/glyphs/__init__.py
+%/__init__.mpy: %/__init__.py
+	mpy-cross $<
+	ampy --port $(PORT) mkdir $(shell dirname $@) --exists-okay
 
 %.pyc: %.py
 	touch $@
@@ -57,4 +58,4 @@ lib/glyphs/__init__.pyc: lib/glyphs/__init__.py
 	mpy-cross $<
 	make upload-file FILE=$@ $@
 
-.PHONY: default install boot app libs clocks lib/colors
+.PHONY: app-default install libs clocks

@@ -1,6 +1,13 @@
 # CHANGELOG
 
-## 2021-02-05
+
+## 2023-02-25
+* Added Picasso BDay color set
+* ColorFactory.get() can now recognize a hex color (`0xFFFFFF`)
+* Added SecondsClock (just messin' around)
+* Updated the `App.mk` Makefile to simplify it and make dependency mgmt better
+
+## 2023-02-05
 * Updated clock to be able to set the Holiday/Seasonal on-the-fly
   - i.e. does not require a restart to recogize the change
 

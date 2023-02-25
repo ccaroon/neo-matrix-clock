@@ -22,7 +22,7 @@ else
 	echo "ERROR: Must Specify a filename with FILE=filename"
 endif
 
-list-files:
+ls-files:
 	ampy --port $(PORT) ls
 
 get-file:
@@ -40,4 +40,11 @@ ifneq ($(FILE),)
 	ampy --port $(PORT) rm $(FILE)
 else
 	echo "ERROR: Must Specify a filename with FILE=filename"
+endif
+
+rm-dir:
+ifneq ($(DIR),)
+	ampy --port $(PORT) rmdir $(DIR)
+else
+	echo "ERROR: Must Specify a directory with DIR=dir-name"
 endif
