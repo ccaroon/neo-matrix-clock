@@ -8,7 +8,7 @@ app-clean:
 	make rm-file FILE=boot.py
 	make rm-file FILE=main.py
 	make rm-dir DIR=clocks
-	make rm-dir DIR=libs
+	make rm-dir DIR=lib
 
 # BOOT & MAIN -----------------------------------------------------------------
 # NOTE: boot and main **must** be .py files ... not .mpy
