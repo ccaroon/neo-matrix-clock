@@ -12,6 +12,7 @@ class Holiday:
     CRAIG_BDAY = 219
     CATE_BDAY = 823
     NATE_BDAY = 818
+    PICASSO_BDAY = 1025
 
     NEWYEAR = 101
     VALENTINES = 214
@@ -24,22 +25,28 @@ class Holiday:
 
     HOLIDAYS = {
         # For Testing Purposes
-        "today": (
+        "test_set": (
+            ColorFactory.hex("0xFF0000"),
+            ColorFactory.hex("0x00FF00"),
+            ColorFactory.hex("0x0000FF"),
+            ColorFactory.hex("0xFFFFFF")
+        ),
+        "picasso_bday": (
             ColorFactory.get("red"),
-            ColorFactory.get("green"),
             ColorFactory.get("blue"),
+            ColorFactory.get("yellow"),
             ColorFactory.get("white")
         ),
         "new_years": (
             ColorFactory.get("white"),
             ColorFactory.get("yellow"),
-            ColorFactory.hex("AF00FF"), # purple
-            ColorFactory.hex("0096C8")  # blue
+            ColorFactory.hex("0xAF00FF"), # purple
+            ColorFactory.hex("0x0096C8")  # blue
         ),
         "valentines": (
             ColorFactory.get("red"),
             ColorFactory.get("white"),
-            ColorFactory.hex("FF4545"), # pink
+            ColorFactory.hex("0xFF4545"), # pink
             ColorFactory.get("black")
         ),
         "birthday": (
@@ -50,7 +57,7 @@ class Holiday:
         ),
         "st_patricks": (
             ColorFactory.get("green"),
-            ColorFactory.hex("28FF28"), # light-green
+            ColorFactory.hex("0x28FF28"), # light-green
             ColorFactory.get("white"),
             ColorFactory.get("black")
         ),
@@ -76,16 +83,17 @@ class Holiday:
             ColorFactory.get("white"),
             ColorFactory.get("green"),
             ColorFactory.get("red"),
-            ColorFactory.hex("4B96FF")  # light-blue
+            ColorFactory.hex("0x4B96FF")  # light-blue
         ),
     }
 
     HOLIDAY_MAP = {
-        TODAY: "new_years",
+        TODAY: "test_set",
         CRAIG_BDAY: "birthday",
         CATE_BDAY: "birthday",
         NATE_BDAY: "birthday",
         PIPER_BDAY: "birthday",
+        PICASSO_BDAY: "picasso_bday",
         NEWYEAR: "new_years",
         VALENTINES: "valentines",
         STPATTY: "st_patricks",

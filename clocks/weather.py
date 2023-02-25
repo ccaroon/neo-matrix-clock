@@ -33,32 +33,32 @@ class WeatherClock(DigitalClock):
         self.__humd = 0
 
     def __temp_to_color(self, temp):
-        color = ColorFactory.hex("FFFFFF")
+        color = ColorFactory.hex("0xFFFFFF")
 
         if temp <= 25:
             # white
-            color = ColorFactory.hex("ffffff")
+            color = ColorFactory.hex("0xffffff")
         elif temp > 25 and temp <= 32:
             # bluish/white
-            color = ColorFactory.hex("e4f0fb")
+            color = ColorFactory.hex("0xe4f0fb")
         elif temp > 32 and temp <= 55:
             # blue
-            color = ColorFactory.hex("047ffb")
+            color = ColorFactory.hex("0x047ffb")
         elif temp > 55 and temp <= 64:
             # cyan
-            color = ColorFactory.hex("04fbe8")
+            color = ColorFactory.hex("0x04fbe8")
         elif temp > 64 and temp <= 75:
             # green
-            color = ColorFactory.hex("33e108")
+            color = ColorFactory.hex("0x33e108")
         elif temp > 75 and temp <= 85:
             # yellow
-            color = ColorFactory.hex("f9f504")
+            color = ColorFactory.hex("0xf9f504")
         elif temp > 85 and temp <= 95:
             # orange
-            color = ColorFactory.hex("f97304")
+            color = ColorFactory.hex("0xf97304")
         else:
             # red
-            color = ColorFactory.hex("ff0000")
+            color = ColorFactory.hex("0xff0000")
 
         return color
 
@@ -66,13 +66,13 @@ class WeatherClock(DigitalClock):
         color = None
 
         if humd <= 25:
-            color = ColorFactory.hex("FFFFFF")
+            color = ColorFactory.hex("0xFFFFFF")
         elif humd > 25 and humd <= 50:
-            color = ColorFactory.hex("8080FF")
+            color = ColorFactory.hex("0x8080FF")
         elif humd > 50 and humd <= 75:
-            color = ColorFactory.hex("4040FF")
+            color = ColorFactory.hex("0x4040FF")
         else:
-            color = ColorFactory.hex("2020FF")
+            color = ColorFactory.hex("0x2020FF")
 
         return color
 

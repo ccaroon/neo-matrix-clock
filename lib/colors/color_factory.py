@@ -40,7 +40,12 @@ class ColorFactory:
 
     @classmethod
     def get(cls, name, brightness=Color.DEFAULT_BRIGHTNESS):
-        color = cls.COLORS.get(name)
+
+        if name.startswith("0x"):
+            color = cls.hex(name)
+        else:
+            color = cls.COLORS.get(name)
+
         if color is None:
             raise ValueError("Unknown Color: '%s'" % name)
 
@@ -72,8 +77,11 @@ class ColorFactory:
 
     @classmethod
     def hex(self, hex_str, brightness=Color.DEFAULT_BRIGHTNESS):
-        red = int(hex_str[0:2], 16)
-        green = int(hex_str[2:4], 16)
-        blue= int(hex_str[4:6], 16)
+        if hex_str.startswith("0x"):
+            red = int(hex_str[2:4], 16)
+            green = int(hex_str[4:6], 16)
+            blue= int(hex_str[6:8], 16)
+        else:
+            raise ValueError("'%s' does not appear to be a HEX number")
 
         return Color(red, green, blue, brightness=brightness)
