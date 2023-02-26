@@ -118,16 +118,17 @@ class WeatherClock(DigitalClock):
         resp = self.__aio.get_data("temperature", fields=['created_at'])
         if resp['success']:
             self.__temp = int(resp["results"][0]["value"])
+            # print(self.__temp)
 
             # created_at is UTC
             # in seconds
             data_age = self.__time_diff2now(resp["results"][0]["created_at"])
             # print(data_age)
 
+            color_set = Holiday.get("current")
             if data_age >= 10 * 60:
-                color = self.ERROR_COLOR
+                color_set = [self.ERROR_COLOR, self.ERROR_COLOR]
             else:
-                color_set = Holiday.get("current")
                 if not color_set:
                     color = self.__temp_to_color(self.__temp)
                     color_set = [color, color]

@@ -74,7 +74,7 @@ def handle_button(p):
 button.irq(handle_button)
 
 # Change the Clock every X seconds
-PERIOD=5*60
+PERIOD=6*60
 timer.init(period=PERIOD*1000, callback=handle_timer)
 # ------------------------------------------------------------------------------
 while True:
