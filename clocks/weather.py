@@ -4,6 +4,7 @@ import time
 from .digital import DigitalClock
 
 from lib.adafruit_io import AdafruitIO
+from lib.chronos import Chronos
 from lib.colors.color_factory import ColorFactory
 from lib.colors.holiday import Holiday
 from lib.glyph import Glyph
@@ -92,12 +93,17 @@ class WeatherClock(DigitalClock):
             int(match.group(4)), int(match.group(5)), int(match.group(6)),
             0, 0
         )
-        # in UTC
+
+        # UTC in seconds
         time_e = time.mktime(time_t)
-        # Adjust for timezone
-        # X hours in seconds
-        # TODO: Adjust for DST
-        time_e += Config.setting("datetime:tz_offset") * (60 * 60)
+
+        # Adjust for timezone & DST
+        offset = Config.setting("datetime:tz_offset")
+        if Chronos.is_dst():
+            offset += 1
+
+        # offset hours in seconds
+        time_e +=  offset * (60 * 60)
 
         now = time.mktime(time.localtime())
 

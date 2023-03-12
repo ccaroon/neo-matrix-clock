@@ -1,6 +1,6 @@
 class Color:
 
-    DEFAULT_BRIGHTNESS = 0.10
+    DEFAULT_BRIGHTNESS = 0.08
 
     def __init__(self, red, green, blue, white=0, **kwargs):
         # number between 0.0 & 1.0

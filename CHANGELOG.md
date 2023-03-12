@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 2023-03-12
+* Fixed DST bug in WeatherClock code that detects old data.
+  - Basically needed to adjust last updated time for DST
 
 ## 2023-02-25
 * Added Picasso BDay color set
