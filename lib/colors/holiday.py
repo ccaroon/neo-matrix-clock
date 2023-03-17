@@ -59,7 +59,7 @@ class Holiday:
             ColorFactory.get("green"),
             ColorFactory.hex("0x28FF28"), # light-green
             ColorFactory.get("white"),
-            ColorFactory.get("black")
+            ColorFactory.hex("0x5ecc09")
         ),
         "independence": (
             ColorFactory.get("red"),

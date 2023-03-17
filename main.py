@@ -25,9 +25,10 @@ from machine import Pin, Timer
 
 from neo_matrix import NeoMatrix
 from clocks.binary import BinaryClock
+# from clocks.color_test import ColorTestClock
 from clocks.digital import DigitalClock
 from clocks.fibonacci import FibonacciClock
-from clocks.seconds import SecondsClock
+# from clocks.seconds import SecondsClock
 from clocks.weather import WeatherClock
 
 button = Pin(27, Pin.IN, Pin.PULL_UP)
@@ -35,13 +36,15 @@ timer = Timer(0)
 
 matrix = NeoMatrix(rgbw=False)
 binary_clock = BinaryClock(matrix)
+# color_clock = ColorTestClock(matrix)
 digital_clock = DigitalClock(matrix, display24h=False)
 fib_clock = FibonacciClock(matrix)
-sec_clock = SecondsClock(matrix)
+# sec_clock = SecondsClock(matrix)
 weather_clock = WeatherClock(matrix, display24h=False)
 
 CLOCKS = [
     # sec_clock,
+    # color_clock,
     binary_clock,
     digital_clock,
     weather_clock,

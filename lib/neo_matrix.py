@@ -8,7 +8,9 @@ from lib.colors.color_factory import ColorFactory
 
 class NeoMatrix:
     PIN = 15
-    PIXELS = 40
+    ROWS = 5
+    COLS = 8
+    PIXELS = ROWS * COLS
     OFF = ColorFactory.get("black")
 
     def __init__(self, rgbw=False):
@@ -36,6 +38,10 @@ class NeoMatrix:
             self.__matrix[i] = color.as_tuple(self.__rgbw)
             self.__matrix.write()
             time.sleep(delay)
+
+    def fill_column(self, col, color):
+        for row in range(0, self.ROWS):
+            self.set_rc(row, col, color)
 
     # Walk each pixel
     def test(self, color=None, iterations=1, delay=0.25):
