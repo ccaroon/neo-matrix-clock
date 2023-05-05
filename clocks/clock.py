@@ -32,11 +32,12 @@ class Clock:
         return color_set
 
     def _get_color_set(self):
-        (hour, _, _) = self._get_hms()
+        # (hour, _, _) = self._get_hms()
 
         color_set = Holiday.get("current")
         if not color_set:
-            if self.USE_RANDOM_COLOR_SET or hour % 2 == 0:
+            # if self.USE_RANDOM_COLOR_SET or hour % 2 == 0:
+            if self.USE_RANDOM_COLOR_SET:
                 color_set = self._daily_random_color_set()
             else:
                 color_set = Season.get("current")

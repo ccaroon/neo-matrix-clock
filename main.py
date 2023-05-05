@@ -48,7 +48,7 @@ CLOCKS = [
     binary_clock,
     digital_clock,
     weather_clock,
-    fib_clock
+    # fib_clock
 ]
 CURRENT_CLOCK = 0
 
