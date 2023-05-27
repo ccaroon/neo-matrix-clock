@@ -46,6 +46,7 @@ CLOCKS = [
     # sec_clock,
     # color_clock,
     binary_clock,
+    weather_clock,
     digital_clock,
     weather_clock,
     # fib_clock
