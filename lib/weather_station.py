@@ -23,10 +23,14 @@ class Reading:
 
 # -----------------------------------------------------------------------------
 class WeatherStation:
+    __INSTANCE = None
+    SAMPLE_INTERVAL = 5 * 60
+
     def __init__(self):
         self.__aio = AdafruitIO("weather-station")
         self.__temp = None
         self.__humd = None
+        self.__last_sample = 0
 
     @property
     def humidity(self):
@@ -35,6 +39,12 @@ class WeatherStation:
     @property
     def temperature(self):
         return self.__temp
+
+    @classmethod
+    def instance(cls):
+        if not cls.__INSTANCE:
+            cls.__INSTANCE = cls()
+        return cls.__INSTANCE
 
     # TODO: move this to Chronos?
     def __time_diff2now(self, date_str):
@@ -75,8 +85,11 @@ class WeatherStation:
         print(self.__humd)
 
     def sample(self):
-        self.__sample_temperature()
-        self.__sample_humidity()
+        now = time.time()
+        if now - self.__last_sample > self.SAMPLE_INTERVAL:
+            self.__sample_temperature()
+            self.__sample_humidity()
+            self.__last_sample = now
 
     def __sample_humidity(self):
         print("...Sampling Humidity Data...")

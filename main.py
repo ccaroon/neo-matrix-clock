@@ -3,7 +3,6 @@ from lib.colors.color_factory import ColorFactory
 from lib.glyph import Glyph
 # ------------------------------------------------------------------------------
 
-
 # For Testing Glyphs
 def draw_glyph(i_name, c1, c2="black"):
     icon = Glyph.get(i_name)
@@ -30,9 +29,6 @@ from clocks.digital import DigitalClock
 from clocks.fibonacci import FibonacciClock
 # from clocks.seconds import SecondsClock
 from clocks.weather import WeatherClock
-
-# -- DEBUGGING --
-from lib.colors.temperature import Temperature
 
 button = Pin(27, Pin.IN, Pin.PULL_UP)
 timer = Timer(0)

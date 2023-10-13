@@ -22,7 +22,7 @@ class WeatherClock(DigitalClock):
 
     def __init__(self, matrix, display24h = True):
         super().__init__(matrix, display24h)
-        self.__weather_station = WeatherStation()
+        self.__weather_station = WeatherStation.instance()
 
     def __humd_to_color(self, humd):
         color = None

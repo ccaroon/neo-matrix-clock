@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 2023-10-13
+* Added Temperature color set class
+* Factored out weather data sampling into new WeatherStation class
+* Updated WeatherClock to use Temperature and WeatherStation classes
+* Added to to base Clock class to display Temperature-based colors every other
+  time it's displayed.
+
 ## 2023-03-12
 * Fixed DST bug in WeatherClock code that detects old data.
   - Basically needed to adjust last updated time for DST

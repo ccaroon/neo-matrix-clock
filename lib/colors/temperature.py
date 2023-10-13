@@ -1,15 +1,48 @@
 from lib.colors.color import Color
 from lib.colors.color_factory import ColorFactory
+from lib.weather_station import WeatherStation
 
 class Temperature:
-    FREEZING    = { "range": range(0,26),   "color": ColorFactory.hex("0xffffff") }
-    REALLY_COLD = { "range": range(26,33),  "color": ColorFactory.hex("0x2222ff") }
-    COLD        = { "range": range(33,56),  "color": ColorFactory.hex("0x0077ff") }
-    COOL        = { "range": range(56,65),  "color": ColorFactory.hex("0x04fbe8") }
-    COMFORTABLE = { "range": range(65,76),  "color": ColorFactory.hex("0x33e108") }
-    WARM        = { "range": range(76,86),  "color": ColorFactory.hex("0xf9f504") }
-    HOT         = { "range": range(86,96),  "color": ColorFactory.hex("0xf97304") }
-    REALLY_HOT  = { "range": range(96,200), "color": ColorFactory.hex("0xff0000") }
+    FREEZING = {
+        "name": "freezing",
+        "range": range(0,26),
+        "color": ColorFactory.hex("0xffffff")
+    }
+    REALLY_COLD = {
+        "name": "really_cold",
+        "range": range(26,33),
+        "color": ColorFactory.hex("0x2222ff")
+    }
+    COLD = {
+        "name": "cold",
+        "range": range(33,56),
+        "color": ColorFactory.hex("0x0077ff")
+    }
+    COOL = {
+        "name": "cool",
+        "range": range(56,65),
+        "color": ColorFactory.hex("0x04fbe8")
+    }
+    COMFORTABLE = {
+        "name": "comfortable",
+        "range": range(65,76),
+        "color": ColorFactory.hex("0x33e108")
+    }
+    WARM = {
+        "name": "warm",
+        "range": range(76,86),
+        "color": ColorFactory.hex("0xf9f504")
+    }
+    HOT = {
+        "name": "hot",
+        "range": range(86,96),
+        "color": ColorFactory.hex("0xf97304")
+    }
+    REALLY_HOT  = {
+        "name": "really_hot",
+        "range": range(96,200),
+        "color": ColorFactory.hex("0xff0000")
+    }
 
     TEMP_RANGES = (
         FREEZING,
@@ -102,6 +135,20 @@ class Temperature:
 
     @classmethod
     def get_current(cls, brightness=Color.DEFAULT_BRIGHTNESS):
+        ws = WeatherStation.instance()
         color_set = None
-        # TODO
+
+        # get current temperature
+        ws.sample()
+        temp = ws.temperature.value
+
+        # get range base on temp
+        temp_range = None
+        for item in cls.TEMP_RANGES:
+            if temp in item["range"]:
+                temp_range = item
+                break
+
+        color_set = cls.TEMPS.get(temp_range["name"])
+
         return color_set

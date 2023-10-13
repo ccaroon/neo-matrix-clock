@@ -5,6 +5,7 @@ import random
 from lib.colors.color_factory import ColorFactory
 from lib.colors.season import Season
 from lib.colors.holiday import Holiday
+from lib.colors.temperature import Temperature
 
 class Clock:
     UPDATE_FREQ = 1 # in seconds
@@ -14,6 +15,7 @@ class Clock:
         self._rtc = RTC()
         self._matrix = matrix
 
+        self.__use_count = 0
         self.__last_update = 0
 
     def _tick(self, update_display=False):
@@ -40,11 +42,15 @@ class Clock:
             if self.USE_RANDOM_COLOR_SET:
                 color_set = self._daily_random_color_set()
             else:
-                color_set = Season.get("current")
+                if self.__use_count % 2 == 0:
+                    color_set = Season.get("current")
+                else:
+                    color_set = Temperature.get("current")
 
         return color_set
 
     def reset(self):
+        self.__use_count += 1
         self.__last_update = 0
 
     def tick(self):
