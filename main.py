@@ -31,6 +31,9 @@ from clocks.fibonacci import FibonacciClock
 # from clocks.seconds import SecondsClock
 from clocks.weather import WeatherClock
 
+# -- DEBUGGING --
+from lib.colors.temperature import Temperature
+
 button = Pin(27, Pin.IN, Pin.PULL_UP)
 timer = Timer(0)
 

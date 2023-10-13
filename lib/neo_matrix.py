@@ -43,6 +43,14 @@ class NeoMatrix:
         for row in range(0, self.ROWS):
             self.set_rc(row, col, color)
 
+    def test_color_set(self, color_set):
+        column = 0
+        for color in color_set:
+            self.fill_column(column,     color)
+            self.fill_column(column + 1, color)
+            column += 2
+        self.__matrix.write()
+
     # Walk each pixel
     def test(self, color=None, iterations=1, delay=0.25):
         for _ in range(iterations):
