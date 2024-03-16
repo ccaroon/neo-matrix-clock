@@ -10,6 +10,7 @@ class Holiday:
 
     PIPER_BDAY = 126
     CRAIG_BDAY = 219
+    CNC_ANNIV = 316
     CATE_BDAY = 823
     NATE_BDAY = 818
     PICASSO_BDAY = 1025
@@ -93,6 +94,7 @@ class Holiday:
         CATE_BDAY: "birthday",
         NATE_BDAY: "birthday",
         PIPER_BDAY: "birthday",
+        CNC_ANNIV: "birthday",
         PICASSO_BDAY: "picasso_bday",
         NEWYEAR: "new_years",
         VALENTINES: "valentines",

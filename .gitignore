@@ -3,3 +3,4 @@ SECRETS.py
 SETTINGS.py
 *.pyc
 *.mpy
+.idea/
